@@ -1,0 +1,193 @@
+@import url("libraries/reset.css");
+@import "libraries/lesshat.less";
+
+/**
+ * vars
+ */
+@pink:rgba(255,0,255,0.7);
+@blue:#56acdd;
+@blackTransulcent:rgba(0,0,0,0.7);
+@whiteTransulcent:rgba(255,255,255,0.2);
+body {
+	background-color:#ebebeb;
+	font-family: helvetica, arial, sans-serif ;
+	//background:#333 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAH0lEQVQIHWO0s4v5z4ADsIDEv369jlWaCasoVHAgJAFGWgSoQWvBMQAAAABJRU5ErkJggg==);
+	//background:#fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAIElEQVQIHWNMrLzlw4ADsIDE57WpbsEmz4RNECY2EJIA5doEDY8lKVEAAAAASUVORK5CYII=);
+	background:rgba(9,104,224,1) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAIElEQVQIHWNMrLzlw4ADsIDE57WpbsEmz4RNECY2EJIA5doEDY8lKVEAAAAASUVORK5CYII=);
+	font-size: 10px;
+	color:#306e88;
+	//height:1000px;
+	//border:1px solid blue;
+}
+
+header, 
+footer {
+	background: #fff;
+	text-align: center;
+	font-size:2em;
+}
+header {
+	padding:15px 0 20px 0;
+}
+footer {
+	padding:25px 0 60px 0;
+}
+
+/*main output*/
+#output {
+	position:fixed;
+	top:0;
+	padding:10px;
+	background:#666;
+	color:#eee;
+	font-family:monospace;
+	z-index:10;
+}
+
+.mainContainer {
+	position: relative;
+
+	#viewport {
+	    bottom: 0;
+	    left: 0;
+	    overflow: hidden;
+	    position: fixed;
+	    right: 0;
+	    top: 0;
+	    .perspective-origin(50% 50%);
+		.perspective(1000);
+		border:1px solid red;
+
+		#world {
+		    width: 512px;
+		    height: 512px;
+		    top: 50%;
+		    left: 50%;
+		    margin-left: -256px;
+		    margin-top: -256px;
+		    position: absolute;
+		    .transform-style(preserve-3d);
+
+		    background-color: @whiteTransulcent;
+		    //background-image: url('../images/sun.png');
+		    background-position: center;
+
+		    border:1px dotted @blue;
+
+		    //global
+		    div {
+		    	.transform-style(preserve-3d);
+		    }
+		    //axes
+		    .axis {
+		    	height:2px;
+		    	width:100%;
+		    	position: absolute;
+		    	background-color: @pink;
+		    }
+		    .y-axis {
+		    	height:100%;
+		    	width:2px;
+		    }
+		    //point
+		    .point {
+		    	width:2px;
+		    	height:2px;
+		    	position: absolute;
+		    	background-color: @pink;
+
+		    }
+			.pointx {
+			    //animation: blink 1s steps(5, start) infinite;
+			    		    	//-webkit-animation-name: blink;
+				//-webkit-animation-duration:20s;
+				//-webkit-animation-iteration-count: 1;
+				//-webkit-animation-timing-function: ease-out;  
+				//-webkit-animation-fill-mode: forwards;
+				//-webkit-animation: blink 2s infinite;
+				//.transition(~"color 1s ease-in-out"); 
+			}
+			@-webkit-keyframes blinkxx{
+				0% {
+					opacity:1;
+				}
+				
+				50% {
+					opacity:0.3;
+				}
+				
+				100% {
+					opacity:1;
+				}
+			}
+			@-webkit-keyframes blink {
+			    to {
+			        background-color: rgba(255,255,255,0.5);
+			    }
+			}
+		    //clouds
+		    .cloudBase {
+			    width: 20px;
+			    height: 20px;
+			    position: absolute;
+			    //top: 256px;
+			    //left: 256px;
+			    margin-left: -10px;
+			    margin-top: -10px;
+			    
+			    background-color: @pink;
+			    border:1px solid @blue;
+
+			    .cloudLayer {
+				    height: 256px;
+				    left: 50%;
+				    margin-left: -128px;
+				    margin-top: -128px;
+				    position: absolute;
+				    top: 50%;
+				    width: 256px;
+				    //background-color: rgba(0,255,255,.1);
+				    background-image: url('../images/cloud.png');
+				    .background-size(cover);
+				    border:1px solid @pink;
+				}
+			}
+		}
+	}
+
+
+
+	#scroller {
+		div{
+			position:relative;
+			border:1px dotted #ccc;
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+		.scene {
+			div.output {
+				position:absolute;
+				background:rgba(255,255,255,0.2);
+				color:#eee;
+				width:10%;
+				top:40%;
+				left:45%;
+				text-align:center;
+				font-family:monospace;
+				p {
+					color:#eee;
+					padding:0;
+				}
+			}
+			
+			
+
+		}
+		.two {height:550px;}
+		.three {height:476px;}
+		.four {height:794px;}
+		.five {height:800px;}
+
+	}	
+}
