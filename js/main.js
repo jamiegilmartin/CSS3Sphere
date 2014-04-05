@@ -10,7 +10,7 @@ Sphere = {
 		var self = this;
 		//init world
 		this.w = new World();
-		return;
+		
 
 		this.myTransform = this.utils.supportsTransitions();
 
@@ -31,7 +31,7 @@ Sphere = {
 		////array of cloud layers
 		//this.layers = [];
 
-		//this.events();
+		this.events();
 		//this.generate();
 		//this.update();
 
@@ -42,10 +42,20 @@ Sphere = {
 		});
 
 
+		var form = document.getElementById('form'),
+			pw = document.getElementById('pw');
+		pw.addEventListener('blur',function(){
+			console.log('blur')
+			var re = /(?=.[a-z])(?=.[A-Z])(?=.*[\d\W])[\S]{8,}$/;
+			console.log( 'test',re.test(pw.value) );
+
+		},false);
+
+
 	},
 	events : function(){
 		var self = this;
-
+		/*
 		window.addEventListener( 'mousemove', function( e ) {
 		    var y = -( .5 - ( e.clientX / window.innerWidth ) ) * 180,
 		 	   	x = ( .5 - ( e.clientY / window.innerHeight ) ) * 180;
@@ -59,7 +69,7 @@ Sphere = {
 		 	//console.log(x,y);
 		    self.updateView();
 		});
-
+		*/
 		window.addEventListener('resize',function(){
 			self.scroller.resize();
 		},false);

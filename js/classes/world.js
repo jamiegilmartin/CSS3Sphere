@@ -33,8 +33,8 @@ function World(){
 
 
     //make axis
-    //this.axisHelper();
-    this.sphericalHelper();
+    this.axisHelper();
+    //this.sphericalHelper();
     this.events();
 };
 //inherits GameObject
