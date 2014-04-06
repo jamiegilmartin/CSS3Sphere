@@ -4,7 +4,7 @@
  */
 function World(){
 	var self =  this;
-	this.myTransform = Sphere.utils.supportsTransitions();
+	this.myTransform = utils.supportsTransitions();
 
 	//dom ele
 	this.viewport = document.getElementById( 'viewport' );
@@ -30,6 +30,10 @@ function World(){
         translateZ( ' +  0  + 'px )';
     this.centerDiv.style[this.myTransform] = t;
     this.world.appendChild( this.centerDiv );
+
+    //particle system
+    this.particleSystem = new ParticleSystem( this.world );
+
 
 
     //make axis
@@ -127,13 +131,13 @@ World.prototype.sphericalHelper = function(){
 	}
 
 	//fill random
-	console.log(Sphere.utils.randIntRange(-radius,radius))
+	console.log(utils.randIntRange(-radius,radius))
 	for(var l=0;l<1000;l++){
 		var point = document.createElement( 'div' );
 		point.classList.add('point');
-		var x = radius-(Sphere.utils.randIntRange(0,radius))*(Math.cos(l)) ,
+		var x = radius-(utils.randIntRange(0,radius))*(Math.cos(l)) ,
 			y =	this.c.y,//(radius-(radius*Math.cos(l)) ),
-			z = (Sphere.utils.randIntRange(0,radius))*(Math.sin(l))
+			z = (utils.randIntRange(0,radius))*(Math.sin(l))
 
 		var t = 'translateX( ' + x + 'px ) \
    		translateY( ' +  y + 'px ) \
@@ -153,16 +157,18 @@ World.prototype.events = function(){
 	 	self.worldAngle.i = x;
 	 	self.worldAngle.j = y;
 
-	    self.update();
+	   	self.updateMove();
+
+
 	    //self.perspective = (  ( e.clientX / window.innerWidth ) ) * 1000;
 	    //console.log(self.perspective)
 		//self.viewport.style.WebkitPerspective = self.perspective + 'px';
 	});
 };
 /**
- * update
+ * update Move
  */
-World.prototype.update = function(){
+World.prototype.updateMove = function(){
 	//super class plomorph
 
 	//rotate world
@@ -178,3 +184,8 @@ World.prototype.update = function(){
 	    rotateX( ' + ( -  this.worldAngle.i ) + 'deg )';
     this.centerDiv.style[this.myTransform] = t;
 };
+
+World.prototype.run = function(){
+	this.particleSystem.run();
+};
+

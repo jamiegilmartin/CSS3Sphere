@@ -21,6 +21,9 @@ header {
 footer {
   padding: 25px 0 60px 0;
 }
+#runBtn {
+  float: right;
+}
 /*main output*/
 #output {
   position: fixed;
@@ -72,6 +75,7 @@ footer {
   -o-transform-style: preserve-3d;
   -ms-transform-style: preserve-3d;
   transform-style: preserve-3d;
+  position: absolute;
 }
 .mainContainer #viewport #world .axis {
   height: 2px;
@@ -104,6 +108,19 @@ footer {
   to {
     background-color: rgba(255, 255, 255, 0.5);
   }
+}
+.mainContainer #viewport #world .particle {
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  background-color: rgba(255, 0, 255, 0.7);
+  border: 1px solid #56acdd;
+  -webkit-border-radius: 10px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 10px;
+  -moz-background-clip: padding;
+  border-radius: 10px;
+  background-clip: padding-box;
 }
 .mainContainer #viewport #world .cloudBase {
   width: 20px;

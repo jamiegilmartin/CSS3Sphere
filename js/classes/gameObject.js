@@ -8,6 +8,13 @@ function GameObject(){
 	
 };
 /**
+ * run
+ */
+GameObject.prototype.run = function(){
+	this.update();
+	this.draw();
+};
+/**
  * update
  */
 GameObject.prototype.update = function(){

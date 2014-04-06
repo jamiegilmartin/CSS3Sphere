@@ -5,7 +5,7 @@
  * @param view - path to image and json
  * @param view - name of json file
  */
-Sprite = function( view, pathPrefix, json ){
+ function Sprite( view, pathPrefix, json ){
 	this.view = view;
 	this.json = json;
 	this.duration = 1;

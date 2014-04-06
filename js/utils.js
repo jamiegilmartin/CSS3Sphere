@@ -1,15 +1,14 @@
 'use strict'; 
-Sphere = window.Sphere || {};
+var utils = window.utils || {};
 
-Sphere.utils = {};
 
-Sphere.utils.randIntRange = function (min, max, roundTo ) {
+utils.randIntRange = function (min, max, roundTo ) {
 	var val = Math.round( Math.random()*(max-min) + min );
 	if( roundTo != undefined ) val = Math.round(val/roundTo) * roundTo;
 	return val;
 };
 //http://stackoverflow.com/questions/7264899/detect-css-transitions-using-javascript-and-without-modernizr
-Sphere.utils.supportsTransitions = function() {
+utils.supportsTransitions = function() {
     var b = document.body || document.documentElement;
     var s = b.style;
     var p = 'transition';

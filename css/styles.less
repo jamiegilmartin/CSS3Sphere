@@ -32,7 +32,9 @@ header {
 footer {
 	padding:25px 0 60px 0;
 }
-
+#runBtn {
+	float:right;
+}
 /*main output*/
 #output {
 	position:fixed;
@@ -77,6 +79,7 @@ footer {
 		    //global
 		    div {
 		    	.transform-style(preserve-3d);
+		    	position: absolute;
 		    }
 		    //axes
 		    .axis {
@@ -125,6 +128,18 @@ footer {
 			        background-color: rgba(255,255,255,0.5);
 			    }
 			}
+
+			//particle
+			.particle {
+				width: 10px;
+			    height: 10px;
+			    position: absolute;
+			    background-color: @pink;
+			    border:1px solid @blue;
+			    .border-radius(10px);
+			}
+
+
 		    //clouds
 		    .cloudBase {
 			    width: 20px;
