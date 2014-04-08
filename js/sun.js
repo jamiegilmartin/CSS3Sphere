@@ -19,7 +19,6 @@ function Sun(world){
 	this.rotateZ = 0;
 
 
-	//this.canvas = new Canvas();
 };
 //inherits GameObject
 Sun.prototype = new GameObject();

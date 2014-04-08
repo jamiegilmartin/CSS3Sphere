@@ -36,14 +36,25 @@ function World(){
 
 
   	//sun canvas
-  	this.sun = new Sun(this);
-  	this.world.appendChild( this.sun.element );
+  	//this.sun = new Sun(this);
+  	//this.world.appendChild( this.sun.element );
 
+  	//set up canvas to get colors
+	this.canvas = new Canvas('sun-canvas');
+	document.body.appendChild(this.canvas.element);
+	this.canvas.loadImage('./images/sun.png', function(){
+		console.log('sun image loaded')
+	});
+
+
+	//set up grid to display colors
+	this.grid = new Grid();
+	document.body.appendChild(this.grid.element);
 
     //make axis
     //this.axisHelper();
     //this.sphericalHelper();
-   	this.events();
+   	//this.events();
 };
 //inherits GameObject
 World.prototype = new GameObject();

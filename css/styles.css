@@ -3,9 +3,8 @@
  * vars
  */
 body {
-  background-color: #fff;
+  background: #0968e0;
   font-family: helvetica, arial, sans-serif;
-  background: #0968e0 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAIElEQVQIHWNMrLzlw4ADsIDE57WpbsEmz4RNECY2EJIA5doEDY8lKVEAAAAASUVORK5CYII=);
   font-size: 10px;
   color: #306e88;
 }
@@ -34,6 +33,26 @@ footer {
   font-family: monospace;
   z-index: 10;
 }
+.sun-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px dotted rgba(255, 0, 255, 0.7);
+}
+.grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.grid .item {
+  -webkit-box-sizing: padding-box;
+  -moz-box-sizing: padding-box;
+  box-sizing: padding-box;
+  position: absolute;
+  border: 1px solid rgba(255, 0, 255, 0.7);
+  font-size: 8px;
+  color: #fff;
+}
 .mainContainer {
   position: relative;
 }
@@ -53,7 +72,8 @@ footer {
   border: 1px solid red;
 }
 .mainContainer #viewport .sun {
-  border: 1px dotted red;
+  position: absolute;
+  border: 1px dotted #56acdd;
 }
 .mainContainer #viewport #world {
   width: 512px;

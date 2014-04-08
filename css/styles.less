@@ -9,11 +9,11 @@
 @blackTransulcent:rgba(0,0,0,0.7);
 @whiteTransulcent:rgba(255,255,255,0.2);
 body {
-	background-color:#fff;
+	background:rgba(9,104,224,1);
 	font-family: helvetica, arial, sans-serif ;
 	//background:#333 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAH0lEQVQIHWO0s4v5z4ADsIDEv369jlWaCasoVHAgJAFGWgSoQWvBMQAAAABJRU5ErkJggg==);
 	//background:#fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAIElEQVQIHWNMrLzlw4ADsIDE57WpbsEmz4RNECY2EJIA5doEDY8lKVEAAAAASUVORK5CYII=);
-	background:rgba(9,104,224,1) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAIElEQVQIHWNMrLzlw4ADsIDE57WpbsEmz4RNECY2EJIA5doEDY8lKVEAAAAASUVORK5CYII=);
+	//background:rgba(9,104,224,1) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAIElEQVQIHWNMrLzlw4ADsIDE57WpbsEmz4RNECY2EJIA5doEDY8lKVEAAAAASUVORK5CYII=);
 	font-size: 10px;
 	color:#306e88;
 	//height:1000px;
@@ -46,6 +46,24 @@ footer {
 	z-index:10;
 }
 
+.sun-canvas {
+	position: absolute;
+	top:0;
+	left:0;
+	border:1px dotted @pink;
+}
+.grid {
+	position: absolute;
+	top:0;
+	left:0;
+	.item {
+		.box-sizing(padding-box);
+		position: absolute;
+		border:1px solid @pink;
+		font-size:8px;
+		color:#fff;
+	}
+}
 .mainContainer {
 	position: relative;
 
@@ -61,8 +79,10 @@ footer {
 		border:1px solid red;
 
 		.sun {
-			border:1px dotted red;
+			position: absolute;
+			border:1px dotted @blue;
 		}
+
 		#world {
 		    width: 512px;
 		    height: 512px;
