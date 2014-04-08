@@ -32,17 +32,21 @@ function World(){
     this.world.appendChild( this.centerDiv );
 
     //particle system
-    this.particleSystem = new ParticleSystem( this.world );
-	this.gravity = new Vector(0,0.1,0);
+    this.particleSystem = new ParticleSystem( this );
+	this.repeller = new Repeller(-10,-20,0);
+	this.gravity = new Vector(0,0.01,0);
   	this.particleSystem.applyForce(this.gravity);
+	this.particleSystem.applyRepeller(this.repeller);
 
+	this.repeller.draw();
+	this.world.appendChild( this.repeller.element );
   	//sun canvas
   	//this.sun = new Canvas(this.viewport,'sun','./images/sun.png');
 
     //make axis
     this.axisHelper();
     this.sphericalHelper();
-    this.events();
+    // /this.events();
 };
 //inherits GameObject
 World.prototype = new GameObject();

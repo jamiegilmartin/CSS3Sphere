@@ -10,8 +10,8 @@ function Particle(x,y,z){
 
 	this.location = new Vector(x,y,z);
 
-	var v1 = Math.random(-1,1),
-		v2 = Math.random(-2,0);
+	var v1 = Math.random(-.1,.1),
+		v2 = Math.random(-.2,0);
 	this.velocity = new Vector(v1,v2,0);
 	this.acceleration = new Vector(0,0,0);
 

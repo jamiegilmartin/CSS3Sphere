@@ -4,6 +4,7 @@
  * @see http://natureofcode.com/book/chapter-4-particle-systems/
  */
 function Repeller(x,y,z){
+	this.strength = 100;
 	//set ele
 	this.element = document.createElement('div');
 	this.element.className = 'repeller';
@@ -21,7 +22,12 @@ Repeller.prototype.constructor = Repeller;
  */
 Repeller.prototype.repel = function( p ){
 	var dir = this.location.subtract( p.location );
-	//var d
+	var distance = dir.magnitude();
+	distance = utils.clamp(distance,5,100);
+	dir.normalize();
+	var force = -1 * this.strength / (distance * distance);
+    dir = dir.multiply(force);
+    return dir;
 };
 
 /**
@@ -35,9 +41,9 @@ Repeller.prototype.update = function(){
  * draw
  */
 Repeller.prototype.draw = function(){
-	var t = 'translateX( ' + this.location.elements[0] + 'px ) \
-        translateY( ' +  this.location.elements[1] + 'px ) \
-        translateZ( ' +  this.location.elements[2] + 'px )';
+	var t = 'translateX( ' + this.location.x + 'px ) \
+        translateY( ' +  this.location.y + 'px ) \
+        translateZ( ' +  this.location.z + 'px )';
     this.element.style[Sphere.myTransform] = t;
 };
 
