@@ -9,14 +9,14 @@ function World(){
 	//dom ele
 	this.viewport = document.getElementById( 'viewport' );
 	this.world = document.getElementById( 'world' );
-	this.worldAngle = $V([0,0]);
+	this.worldAngle = new Vector(0,0,0);
 	this.d = 0;// -1000; //depth
 	this.perspective = 1000;
 
 	this.viewport.style.perspective = this.perspective;
 	this.viewport.style.WebkitPerspective = this.perspective;
 
-
+	//center 'c'
 	this.c = {
 		x : this.world.offsetWidth / 2,
 		y : this.world.offsetHeight / 2
@@ -33,17 +33,46 @@ function World(){
 
     //particle system
     this.particleSystem = new ParticleSystem( this.world );
+	this.gravity = new Vector(0,0.1,0);
+  	this.particleSystem.applyForce(this.gravity);
 
-
+  	//sun canvas
+  	//this.sun = new Canvas(this.viewport,'sun','./images/sun.png');
 
     //make axis
     this.axisHelper();
-    //this.sphericalHelper();
+    this.sphericalHelper();
     this.events();
 };
 //inherits GameObject
 World.prototype = new GameObject();
 World.prototype.constructor = World;
+
+
+/**
+ * world events
+ */
+World.prototype.events = function(){
+	var self = this;
+	window.addEventListener( 'mousemove', function( e ) {
+	    var y = -( .5 - ( e.clientX / window.innerWidth ) ) * 180,
+	 	   	x = ( .5 - ( e.clientY / window.innerHeight ) ) * 180;
+	 	self.worldAngle.i = x;//arbitrary keys left over from slyvester.js days
+	 	self.worldAngle.j = y;
+
+	   	self.updateMove();
+	    if(e.clientX<window.innerWidth/2){
+	    	self.perspective = ( ( e.clientX / window.innerWidth*2 ) ) * 1000;
+	    }else{
+	    	self.perspective =  self.c.x+(.5 - ( (e.clientX-window.innerWidth*.5 ) / window.innerWidth*2 )  ) * 1000;
+	    }
+	    
+	    self.perspective = 1000 - self.perspective;
+	    self.perspective = utils.clamp(  self.perspective, 0, 1000);
+	    //console.log('self.perspective',self.perspective)
+		self.viewport.style.WebkitPerspective = self.perspective + 'px';
+	});
+};
 
 /**
  * draw x,y,z, axes
@@ -55,7 +84,6 @@ World.prototype.axisHelper = function(){
 				z : document.createElement( 'div' )
 			   };
 
-	//for(var i=0;i<axes.length;i++){
 	for(var key in axes){
   		axes[key].classList.add('axis');
   		var t;
@@ -87,8 +115,9 @@ World.prototype.axisHelper = function(){
  */
 World.prototype.sphericalHelper = function(){
 	var radius = this.world.offsetHeight/2;
+	var degrees = 90;
 	//x circle, z depth
-	for(var i=0;i<360;i++){
+	for(var i=0;i<degrees;i++){
 		var point = document.createElement( 'div' );
 		point.classList.add('point');
 		var x = radius-(radius*Math.cos(i)),
@@ -102,7 +131,7 @@ World.prototype.sphericalHelper = function(){
    		this.world.appendChild( point );
 	}
 	//y circle, z depth
-	for(var j=0;j<360;j++){
+	for(var j=0;j<degrees;j++){
 		var point = document.createElement( 'div' );
 		point.classList.add('point');
 		var x = this.c.x,
@@ -116,7 +145,7 @@ World.prototype.sphericalHelper = function(){
    		this.world.appendChild( point );
 	}
 	//z circle, y depth
-	for(var k=0;k<360;k++){
+	for(var k=0;k<degrees;k++){
 		var point = document.createElement( 'div' );
 		point.classList.add('point');
 		var x = radius-(radius*Math.cos(k)),
@@ -131,7 +160,8 @@ World.prototype.sphericalHelper = function(){
 	}
 
 	//fill random
-	console.log(utils.randIntRange(-radius,radius))
+	//console.log(utils.randIntRange(-radius,radius))
+	/*
 	for(var l=0;l<1000;l++){
 		var point = document.createElement( 'div' );
 		point.classList.add('point');
@@ -145,26 +175,9 @@ World.prototype.sphericalHelper = function(){
     	point.style[this.myTransform] = t;
    		this.world.appendChild( point );
 	}
+	*/
 };
-/**
- * world events
- */
-World.prototype.events = function(){
-	var self = this;
-	window.addEventListener( 'mousemove', function( e ) {
-	    var y = -( .5 - ( e.clientX / window.innerWidth ) ) * 180,
-	 	   	x = ( .5 - ( e.clientY / window.innerHeight ) ) * 180;
-	 	self.worldAngle.i = x;
-	 	self.worldAngle.j = y;
 
-	   	self.updateMove();
-
-
-	    //self.perspective = (  ( e.clientX / window.innerWidth ) ) * 1000;
-	    //console.log(self.perspective)
-		//self.viewport.style.WebkitPerspective = self.perspective + 'px';
-	});
-};
 /**
  * update Move
  */

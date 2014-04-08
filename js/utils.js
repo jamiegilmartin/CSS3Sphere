@@ -1,6 +1,6 @@
 'use strict'; 
-var utils = window.utils || {};
 
+var utils = window.utils || {};
 
 utils.randIntRange = function (min, max, roundTo ) {
 	var val = Math.round( Math.random()*(max-min) + min );
@@ -37,6 +37,41 @@ utils.supportsTransitions = function() {
 	
     return false;
 };
+utils.shuffleArray = function( inArray ) {
+    var i = inArray.length,
+        j,
+        temp;
+    if ( i === 0 ) return false;
+    while ( --i ) {
+        j = Math.floor( Math.random() * ( i + 1 ) );
+        temp = inArray[i];
+        inArray[i] = inArray[j];
+        inArray[j] = temp;
+    }
+    return inArray;
+};
+/**
+ * @see http://stackoverflow.com/questions/11409895/whats-the-most-elegant-way-to-cap-a-number-to-a-segment
+ * Returns a number whose value is limited to the given range.
+ *
+ * Example: limit the output of this computation to between 0 and 255
+ * (x * 255).clamp(0, 255)
+ *
+ * @param {Number} min The lower boundary of the output range
+ * @param {Number} max The upper boundary of the output range
+ * @returns A number in the range [min, max]
+ * @type Number
+ */
+utils.clamp = function(number,min,max){
+    /* do non prototype way
+    Number.prototype.clamp = function(min, max) {
+        return Math.min(Math.max(this, min), max);
+    };
+    */
+    return  Math.min(Math.max(number, min), max);
+};
+
+
 
 
 ///!!!!!!

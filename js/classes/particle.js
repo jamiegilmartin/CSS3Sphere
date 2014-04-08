@@ -8,15 +8,15 @@ function Particle(x,y,z){
 	this.element = document.createElement('div');
 	this.element.className = 'particle';
 
-	this.location = Vector.create([x,y,z]);
+	this.location = new Vector(x,y,z);
 
 	var v1 = Math.random(-1,1),
 		v2 = Math.random(-2,0);
-	this.velocity = Vector.create([v1,v2,0]);
-	this.acceleration = Vector.create([0,0.5,0.5]);
+	this.velocity = new Vector(v1,v2,0);
+	this.acceleration = new Vector(0,0,0);
 
-	this.lifeSpan =  255;
-
+	this.lifeSpan =  8255;
+	this.mass = 1;
 
 };
 //inherits GameObject
@@ -26,26 +26,31 @@ Particle.prototype.constructor = Particle;
 
 
 /**
+ * force
+ */
+Particle.prototype.applyForce = function( force ){
+  	var f = force.multiply(this.mass);
+    this.acceleration = this.acceleration.add(f);
+};
+
+/**
  * update
  */
 Particle.prototype.update = function(){
-	this.velocity.add(this.acceleration);
+	this.velocity = this.velocity.add(this.acceleration);
 	this.location = this.location.add(this.velocity);
 
 	this.lifeSpan -= 2;
-
 };
 
 /**
  * draw
  */
 Particle.prototype.draw = function(){
-	var t = 'translateX( ' + this.location.elements[0] + 'px ) \
-        translateY( ' +  this.location.elements[1] + 'px ) \
-        translateZ( ' +  this.location.elements[2] + 'px )';
+	var t = 'translateX( ' + this.location.x + 'px ) \
+        translateY( ' +  this.location.y + 'px ) \
+        translateZ( ' +  this.location.z + 'px )';
     this.element.style[Sphere.myTransform] = t;
-
-    console.log('im dead?', this.isDead(),this.lifeSpan)
 };
 
 Particle.prototype.isDead = function(){

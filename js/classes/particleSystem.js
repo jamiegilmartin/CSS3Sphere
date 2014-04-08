@@ -6,6 +6,8 @@ function ParticleSystem( world ){
 	this.particles = [];
 	this.world = world;
 
+	this.repeller = new Repeller();
+
 	for(var i=0;i<10;i++){
 		this.make();
 	}
@@ -16,7 +18,7 @@ ParticleSystem.prototype = new GameObject();
 ParticleSystem.prototype.constructor = ParticleSystem;
 
 /**
- * update
+ * make
  */
 ParticleSystem.prototype.make = function(){
 	var radius = this.world.offsetHeight/2;
@@ -32,15 +34,30 @@ ParticleSystem.prototype.make = function(){
 };
 
 /**
+ * force
+ */
+ParticleSystem.prototype.applyForce = function( force ){
+	for(var i = 0; i < this.particles.length; i++) {
+		this.particles[i].applyForce(force);
+	}
+};
+/**
+ * repeller
+ */
+ParticleSystem.prototype.applyRepeller = function( repeller ){
+	for(var i = 0; i < this.particles.length; i++) {
+		//var force = Vector.create( repeller.repel(this.particles[i]) );
+		//this.particles[i].applyForce(force);
+	}
+};
+/**
  * draw
  */
 ParticleSystem.prototype.draw = function(){
-
-
 	for(var i = 0; i < this.particles.length; i++) {
 		this.particles[i].run();
 		if(this.particles[i].isDead()){
-			console.log(i, 'is dead')
+			//console.log(i, 'is dead')
 			this.world.removeChild(this.particles[i].element );
 			this.particles.splice(i, 1);
 		}
