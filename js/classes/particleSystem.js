@@ -47,8 +47,9 @@ ParticleSystem.prototype.applyForce = function( force ){
  */
 ParticleSystem.prototype.applyRepeller = function( repeller ){
 	for(var i = 0; i < this.particles.length; i++) {
-		var force = new Vector( repeller.repel(this.particles[i]) );
-		this.particles[i].applyForce(force);
+		var p =  this.particles[i];
+		var force = repeller.repel(p);
+		p.applyForce(force);
 	}
 };
 /**
@@ -59,7 +60,7 @@ ParticleSystem.prototype.draw = function(){
 		this.particles[i].run();
 		if(this.particles[i].isDead()){
 			//console.log(i, 'is dead')
-			this.world.removeChild(this.particles[i].element );
+			this.world.world.removeChild(this.particles[i].element );
 			this.particles.splice(i, 1);
 		}
 	}

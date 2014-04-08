@@ -23,30 +23,27 @@ function World(){
 	}
 
 	//centering div
-	this.centerDiv = document.createElement( 'div'  );	
-    this.centerDiv.className = 'cloudBase';
-    var t = 'translateX( ' + this.c.x + 'px ) \
-        translateY( ' +  this.c.y  + 'px ) \
-        translateZ( ' +  0  + 'px )';
-    this.centerDiv.style[this.myTransform] = t;
-    this.world.appendChild( this.centerDiv );
+	//this.center();
 
     //particle system
-    this.particleSystem = new ParticleSystem( this );
-	this.repeller = new Repeller(-10,-20,0);
-	this.gravity = new Vector(0,0.01,0);
-  	this.particleSystem.applyForce(this.gravity);
-	this.particleSystem.applyRepeller(this.repeller);
+    //this.particleSystem = new ParticleSystem( this );
+	////this.repeller = new Repeller( this.c.x+10, this.c.y+30, 0);
+	//this.gravity = new Vector(0,0.01,0);
+  	//this.particleSystem.applyForce(this.gravity);
+	//this.particleSystem.applyRepeller( this.repeller );
 
-	this.repeller.draw();
-	this.world.appendChild( this.repeller.element );
+	//this.world.appendChild( this.repeller.element );
+
+
   	//sun canvas
-  	//this.sun = new Canvas(this.viewport,'sun','./images/sun.png');
+  	this.sun = new Sun(this);
+  	this.world.appendChild( this.sun.element );
+
 
     //make axis
-    this.axisHelper();
-    this.sphericalHelper();
-    // /this.events();
+    //this.axisHelper();
+    //this.sphericalHelper();
+   	this.events();
 };
 //inherits GameObject
 World.prototype = new GameObject();
@@ -59,8 +56,8 @@ World.prototype.constructor = World;
 World.prototype.events = function(){
 	var self = this;
 	window.addEventListener( 'mousemove', function( e ) {
-	    var y = -( .5 - ( e.clientX / window.innerWidth ) ) * 180,
-	 	   	x = ( .5 - ( e.clientY / window.innerHeight ) ) * 180;
+	    var y = -( .5 - ( e.clientX / window.innerWidth ) ) * 15,//180 = full tilt
+	 	   	x = ( .5 - ( e.clientY / window.innerHeight ) ) * 15;
 	 	self.worldAngle.i = x;//arbitrary keys left over from slyvester.js days
 	 	self.worldAngle.j = y;
 
@@ -74,10 +71,22 @@ World.prototype.events = function(){
 	    self.perspective = 1000 - self.perspective;
 	    self.perspective = utils.clamp(  self.perspective, 0, 1000);
 	    //console.log('self.perspective',self.perspective)
-		self.viewport.style.WebkitPerspective = self.perspective + 'px';
+		//self.viewport.style.WebkitPerspective = self.perspective + 'px';
 	});
 };
 
+/**
+ * center div
+ */
+World.prototype.center = function(){
+	this.centerDiv = document.createElement( 'div'  );	
+    this.centerDiv.className = 'center';
+    var t = 'translateX( ' + this.c.x + 'px ) \
+        translateY( ' +  this.c.y  + 'px ) \
+        translateZ( ' +  0  + 'px )';
+    this.centerDiv.style[this.myTransform] = t;
+    this.world.appendChild( this.centerDiv );
+};
 /**
  * draw x,y,z, axes
  */
@@ -199,10 +208,11 @@ World.prototype.updateMove = function(){
         translateZ( ' +  0  + 'px ) \
         rotateY( ' + ( -  this.worldAngle.j ) + 'deg ) \
 	    rotateX( ' + ( -  this.worldAngle.i ) + 'deg )';
-    this.centerDiv.style[this.myTransform] = t;
+    if(this.centerDiv) this.centerDiv.style[this.myTransform] = t;
 };
 
 World.prototype.run = function(){
-	this.particleSystem.run();
+	if(this.sun) this.sun.run();
+	if(this.particleSystem) this.particleSystem.run();
 };
 

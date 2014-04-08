@@ -2,15 +2,13 @@
  * @Class Canvas
  * @author jamie.gilmartin@ogilvy.com
  */
-function Canvas( parent,name,image){
+function Canvas( parent, name ){
 	console.log('can obj');
-	this.canvas = document.createElement('canvas');
-	this.canvas.classList.add(name)
-	this.w = this.canvas.width = window.innerWidth;
-	this.h = this.canvas.height = window.innerHeight;
+	this.element = document.createElement('canvas');
+	this.element.classList.add(name)
+	this.w = this.element.width = window.innerWidth;
+	this.h = this.element.height = window.innerHeight;
 	
-	this.image = image;
-
 
 	//time
 	this.startTime = Date.now();
@@ -24,13 +22,15 @@ function Canvas( parent,name,image){
 
 	this.playing = true;
 	
-	parent.appendChild( this.canvas );
+
+	//append
+	parent.appendChild( this.element );
 	
-	if (this.canvas.getContext){  
-		this.c = this.canvas.getContext('2d');
+	if (this.element.getContext){  
+		this.c = this.element.getContext('2d');
 		// drawing code here
 		
-		this.loadImage();
+		//this.loadImage();
 
 		//center canvas
 		//this.c.translate(this.w*0.5,this.h*0.5);
@@ -44,17 +44,17 @@ Canvas.prototype = new GameObject();
 Canvas.prototype.constructor = Canvas;
 
 
-Canvas.prototype.loadImage = function(){
+Canvas.prototype.loadImage = function( image ){
 	var self = this;
 	var img = new Image();
 	img.crossOrigin = true;
 	img.onload = function(){
 
 		self.c.drawImage(img, 0, 0, self.w, self.h );
-		self.originalPixels = self.c.getImageData(0, 0, self.canvas.w, self.canvas.h );
+		self.originalPixels = self.c.getImageData(0, 0, self.w, self.h );
 
 	
-		self.fillGridWidthImageData();
+		//self.fillGridWidthImageData();
 	}
-	img.src = this.image;
+	img.src = image;
 };	

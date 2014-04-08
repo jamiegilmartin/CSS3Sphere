@@ -10,6 +10,7 @@ function Repeller(x,y,z){
 	this.element.className = 'repeller';
 
 	this.location = new Vector(x,y,z);
+	this.draw();
 
 };
 //inherits GameObject

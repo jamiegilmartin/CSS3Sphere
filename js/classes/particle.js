@@ -15,7 +15,7 @@ function Particle(x,y,z){
 	this.velocity = new Vector(v1,v2,0);
 	this.acceleration = new Vector(0,0,0);
 
-	this.lifeSpan =  8255;
+	this.lifeSpan =  255;
 	this.mass = 1;
 
 };
