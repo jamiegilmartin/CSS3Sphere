@@ -215,15 +215,18 @@ Canvas.prototype.draw = function(){
 			this.c.fillStyle = this.imageColors[utils.randIntRange(0,this.imageColors.length-1)];
 
 
-			this.c.lineTo(x,y);
-			this.c.fillRect(x,y,3,3);
+			//this.c.lineTo(x,y);
+			//this.c.fillRect(x,y,3,3);
+			//this.c.quadraticCurveTo(0,0,x,y);
+			//this.c.bezierCurveTo(n,n,x+n,y+n,x,y);
+			this.c.arcTo(x,y,x*n,y*n,r)
 		}
 		this.n -= this.n*0.1;
 		this.r += this.r*0.01;
 	}
 	this.c.stroke();
 
-	this.c.globalAlpha = 1 /  n;
+	this.c.globalAlpha = (1/n)//*Math.random();
 
 	this.fade();
 
