@@ -41,15 +41,22 @@ function World(){
 
   	//set up canvas to get colors
 	this.canvas = new Canvas('sun-canvas');
-	document.body.appendChild(this.canvas.element);
-	this.canvas.loadImage('./images/sun.png', function(){
-		console.log('sun image loaded')
-	});
-
+	this.canvas.appendToDom(this.viewport);//don't need in dom
 
 	//set up grid to display colors
 	this.grid = new Grid();
-	document.body.appendChild(this.grid.element);
+	//document.body.appendChild(this.grid.element);
+
+
+	this.canvas.loadImage('./images/sun.png', function(data){
+		console.log('sun image loaded');
+		self.grid.fillGridWidthImageData(data);
+		//self.canvas.drawGrid();
+		//self.canvas.mathographics();
+	});
+
+
+	
 
     //make axis
     //this.axisHelper();

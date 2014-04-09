@@ -26,7 +26,6 @@ GridItem.prototype.make = function(){
 	//this.element.innerHTML = this.msg;
 };
 GridItem.prototype.fill = function(color){
-	console.log('fill me')
 	if(!this.isFull){
 		//this.ele.classList.add('full');
 		
@@ -48,7 +47,7 @@ GridItem.prototype.turn = function( colors ){
 	}
 	
 	function turn(){
-		self.ele.style.backgroundColor = getColor();
+		self.element.style.backgroundColor = getColor();
 		setTimeout(turn,turnDelay);
 	}
 	setTimeout(turn,turnDelay);

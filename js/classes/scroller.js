@@ -6,7 +6,7 @@
 function Scroller( callback ){
 	this.callback = callback;
 	this.wrap = document.getElementById('scroller');
-	this.output = document.getElementById('output');
+	this.output = document.getElementById('scroller-output');
 	this.mainPercentOut = this.output.getElementsByClassName('mainPercent')[0];
 	this.scenePercent = this.output.getElementsByClassName('scenePercent')[0];//set from scene
 	this.kids = this.wrap.getElementsByClassName('scene');

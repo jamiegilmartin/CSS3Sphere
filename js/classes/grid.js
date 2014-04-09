@@ -8,12 +8,14 @@ function Grid(){
 	this.w = this.element.width = window.innerWidth;
 	this.h = this.element.height = window.innerHeight;
 
-	this.columns = 50;
-	this.rows = 50;
+	this.columns = 100;
+	this.rows = 100;
 
 	this.build();
 };
-
+//inherits GameObject
+Grid.prototype = new GameObject();
+Grid.prototype.constructor = Grid;
 
 Grid.prototype.build =  function(){
 	//build grid
@@ -57,7 +59,7 @@ Grid.prototype.build =  function(){
 	//!!!!!!!!!!!!
 	//don't need to append to dom! just for testing
 
-	this.floodFill(0,0);
+	//this.floodFill(0,0);
 };
 /**
  * @deprecated || @justForFun 
@@ -89,4 +91,78 @@ Grid.prototype.floodFill =  function( x, y ){
 		setTimeout(timed, time -= 0.5 );//add sine wave or something, colors, blinks, fizzes ???
 	}
 	
+};
+
+Grid.prototype.fillGridWidthImageData =  function( pixels ){
+
+	var data = pixels.data;
+	
+	var imageWidth = Math.round(pixels.width / this.columns);
+	var imageHeight = Math.round(pixels.height / this.rows);
+	var scale = imageWidth;
+
+	for(var x = 0; x < this.columns; x++){
+		for(var y = 0; y < this.rows; y++){
+			
+			var xIndex = x * this.square.w;
+			var yIndex = y * this.square.h;
+			
+			var index = ( xIndex+yIndex*pixels.width ) * 4;
+			
+			var red = data[ index ];
+			var green = data[index + 1];
+			var blue = data[index + 2];
+			var alpha = data[index + 3];
+			
+			var color = 'rgba('+ red+','+ green+','+ blue+','+ (alpha / 255)+')';
+
+			this.surface[x][y].fill( color );
+			
+			/*
+			if(alpha>0){
+				var nAlpha = (alpha / 255);
+
+				console.log(red,green,blue,alpha,' ',nAlpha)
+				var colors =[
+					'rgba('+ red+','+ green+','+ blue+','+ alpha +')',
+					'rgba('+ red+','+ green+','+ blue+','+ alpha +')',
+					'rgba('+ red+','+ green+','+ blue+','+ alpha +')',
+					'rgba('+ red+','+ green+','+ blue+','+ alpha +')',
+					'rgba('+ red+','+ green+','+ blue+','+ alpha +')'
+				];
+				//this.surface[x][y].turn( colors );
+			}
+			
+			//twinkle red squares
+			if(red > 170 && red < 210){
+				var colors =[
+					'rgba('+ 175+','+ green+','+ blue+','+ alpha+')',
+					'rgba('+ 185+','+ green+','+ blue+','+ alpha+')',
+					'rgba('+ 195+','+ green+','+ blue+','+ alpha+')',
+					'rgba('+ 205+','+ green+','+ blue+','+ alpha+')',
+					'rgba('+ 209+','+ green+','+ blue+','+ alpha+')'
+				];
+				this.surface[x][y].turn( colors );
+			}else{
+				var rand =  0;//utils.randIntRange(-10,10);
+				
+				var colors =[
+					'rgba('+ red+','+ green+','+ blue+','+ (alpha+rand)+')',
+					'rgba('+ red+','+ green+','+ blue+','+ (alpha+rand)+')',
+					'rgba('+ red+','+ green+','+ blue+','+ (alpha+rand)+')',
+					'rgba('+ red+','+ green+','+ blue+','+ (alpha+rand)+')',
+					'rgba('+ red+','+ green+','+ blue+','+ (alpha+rand)+')'
+				];
+				this.surface[x][y].turn( colors );
+			}
+			*/
+		}
+	}
+};
+
+/**
+ * @see http://freespace.virgin.net/hugo.elias/graphics/x_water.htm
+ */
+Grid.prototype.ripple = function(){
+
 };

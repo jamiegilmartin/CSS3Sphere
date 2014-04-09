@@ -7,7 +7,20 @@ var Sphere = window.Sphere || {};
  */
 Sphere = {
 	init : function(){
-		var self = this;
+		var self = this,
+			now = Date.now(); //new Date().getTime();
+			
+		this.startTime = now;
+		this.then = now;
+		
+		this.secondsRunning = 0;
+		this.duration = 10;
+		this.fps = 24;
+		this.fpsInterval = 1000 / this.fps;
+		this.delta;
+		this.frame = 0;
+
+
 		this.myTransform = utils.supportsTransitions();
 
 		//init world
@@ -15,8 +28,10 @@ Sphere = {
 
 		//run
 		this.playing = true;
+		this.interval = 0;
 		this.runBtn = document.getElementById('runBtn');
 
+		this.output = document.getElementById('timer-output');
 
 		this.events();
 
@@ -41,14 +56,35 @@ Sphere = {
 			self.scroller.scroll();
 		},false);
 	},
-	loop : function(){
-		var self=this;
-		this.world.run();
+	loop : function( lastTime ){
+		var self = this,
+			now = Date.now(), //new Date().getTime();
+			deltaTime = now - ( lastTime || now);
 
+		this.delta = now - this.then;
+		
+		//http://codetheory.in/controlling-the-frame-rate-with-requestanimationframe/
+		//http://creativejs.com/resources/requestanimationframe/
+		if( this.delta > this.fpsInterval){
+			this.then = now - (this.delta % this.fpsInterval);
+			
+			this.run();
+			this.frame ++;
+			
+			this.output.innerHTML = this.frame + ' /' + Math.floor((this.then - this.startTime)/1000)+'s === ' + parseInt(this.frame/((this.then - this.startTime)/1000))+'fps';
+		}
+		
+		//time in seconds
+		this.secondsRunning = (now - this.startTime) / 1000;
+		
+		this.interval++;
 
 	    requestAnimationFrame(function(){
 	    	if(self.playing) self.loop();
 	    });
+	},
+	run : function(){
+		this.world.run();
 	}
 };
 
