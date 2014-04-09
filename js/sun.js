@@ -15,7 +15,7 @@ function Sun(world){
 	this.element.style.width = this.w +'px';
 	this.element.style.height = this.h + 'px';
 
-	this.location = new Vector((this.world.c.x - (this.w*.5)),(this.world.c.y - (this.h*.5)), 0 );
+	this.originalLocation = this.location = new Vector((this.world.c.x - (this.w*.5)),(this.world.c.y - (this.h*.5)), 0 );
 	this.rotateZ = 0;
 
 

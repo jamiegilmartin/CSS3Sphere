@@ -39,6 +39,7 @@ Sphere = {
 		this.scroller = new Scroller(function(percentage){
 			//console.log('scroller', percentage )
 			//self.viewport.style.top = percentage + '%';//window.pageYOffset + 'px'
+			self.world.updateOnScroll(percentage);
 		});
 
 		this.loop();

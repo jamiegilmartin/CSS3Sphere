@@ -2,17 +2,14 @@
  * @Class Cloud
  * @author jamie.gilmartin@ogilvy.com
  */
-function Cloud(x,y,z){
+function Cloud(world,x,y,z){
+	this.world = world;
 	this.element = document.createElement('div');
 	this.element.classList.add('cloudBase');
 
-	this.location = new Vector( x,y,z );
+	this.originalLocation = this.location = new Vector( x,y,z );
 
-	//place cloud
-	var t = 'translateX( ' + this.location.x + 'px ) \
-        translateY( ' +  this.location.y + 'px ) \
-        translateZ( ' +  this.location.z + 'px )';
-    this.element.style[Sphere.myTransform] = t;
+
 
 
 	this.numberOfLayers = 5 + Math.round( Math.random() * 10 );
@@ -61,7 +58,11 @@ Cloud.prototype.update = function(){
  * draw
  */
 Cloud.prototype.draw = function(){
-	
+		//place cloud
+	var t = 'translateX( ' + this.location.x + 'px ) \
+        translateY( ' +  this.location.y + 'px ) \
+        translateZ( ' +  this.location.z + 'px )';
+    this.element.style[Sphere.myTransform] = t;
 
 	for( var j = 0; j < this.layers.length; j++ ) {
         var layer = this.layers[ j ];
@@ -69,8 +70,8 @@ Cloud.prototype.draw = function(){
         var t = 'translateX( ' + layer.data.x + 'px ) \
             translateY( ' + layer.data.y + 'px ) \
             translateZ( ' + layer.data.z + 'px ) \
-            rotateY( ' + ( -  this.worldAngle.j ) + 'deg ) \
-            rotateX( ' + ( -  this.worldAngle.i ) + 'deg ) \
+            rotateY( ' + ( -  this.world.worldAngle.j ) + 'deg ) \
+            rotateX( ' + ( -  this.world.worldAngle.i ) + 'deg ) \
             rotateZ( '+layer.data.a+'deg ) \
             scale( ' + layer.data.s + ')';
         layer.style[Sphere.myTransform] = t;

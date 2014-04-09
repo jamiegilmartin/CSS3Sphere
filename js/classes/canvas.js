@@ -211,7 +211,7 @@ Canvas.prototype.draw = function(){
 	//mathographics page 126
 	var n = this.n%360; //this.n;
 	//var n = 0;
-	var r = this.r%this.w*.5;
+	var r = this.r%500;
 
 	//console.log(n)
 
@@ -225,7 +225,7 @@ Canvas.prototype.draw = function(){
 			//colors
 			//var color = this.getColorByPos(x,y,r);
 			this.c.strokeStyle = 'rgba(255,255,255,0.05)';
-			this.c.fillStyle = 'rgba(255,255,255,0.1)';
+			this.c.fillStyle = 'rgba(255,255,255,0.5)';
 
 
 			this.c.lineTo(x,y);

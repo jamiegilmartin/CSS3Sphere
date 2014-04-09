@@ -24,6 +24,10 @@ function World(){
 		y : this.h / 2
 	}
 
+	self.worldAngle.i = 0;//arbitrary keys left over from slyvester.js days
+	self.worldAngle.j = 0;
+
+
 	//centering div
 	//this.center();
 
@@ -61,11 +65,11 @@ function World(){
 	this.numberOfClouds = 2;
 	this.clouds = [];
 
-	var cloud1 = new Cloud( -this.c.x , this.c.y  , 0)
+	var cloud1 = new Cloud( this, -this.c.x , this.c.y  , 0)
 	this.clouds.push( cloud1 );
 	this.world.appendChild( cloud1.element );
 
-	var cloud2 = new Cloud( this.w +this.c.x , this.c.y  , 0)
+	var cloud2 = new Cloud(  this, this.w +this.c.x , this.c.y  , 0)
 	this.clouds.push( cloud2 );
 	this.world.appendChild( cloud2.element );
 
@@ -256,6 +260,14 @@ World.prototype.run = function(){
 
 	for(var i=0;i<this.clouds.length;i++){
 		this.clouds[i].run();
+	}
+};
+
+World.prototype.updateOnScroll = function(percentage){
+	this.sun.location.y = percentage * this.sun.originalLocation.x;
+
+	for(var i=0;i<this.clouds.length;i++){
+	this.clouds[i].location.x += percentage;
 	}
 };
 
