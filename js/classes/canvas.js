@@ -36,7 +36,8 @@ function Canvas(name ){
 		//center canvas
 		//this.c.translate(this.w*0.5,this.h*0.5);
 
-		//this.n = 0;
+		this.n = 0;
+		this.r = 50;
 		//this.drawGrid();
 	}
 };
@@ -112,49 +113,34 @@ Canvas.prototype.drawGrid = function(  ){
 	}
 };
 Canvas.prototype.update = function(){
-
-	//colors
-	//this.c.strokeStyle = "#000";
-	//this.c.lineWidth = 1.5;
-	this.c.beginPath();
-
-	//mathographics page 126
-	//for(var n = 1; n<10;n++){
-	var r = 50;
-	for(var a = 0; a<360; a+=360/30){
-		var x = r*Math.cos(a);
-		var y = r*Math.sin(a);
-		if(a===0) this.c.moveTo(x,y);
-		//this.c.lineTo(x,y);
-		this.c.fillRect(x,y,1,1);
-	}
-	//}
-
-	this.c.stroke();
-};
-
-Canvas.prototype.draw = function(){
 	this.c.save();
+	this.n++;
+	this.r+=5;
+	
+};
+Canvas.prototype.draw = function(){
 	//center canvas
-	this.c.translate(this.w*0.5,this.h*0.5);
+	this.center();
 	//colors
 	//this.c.strokeStyle = "#000";
 	//this.c.lineWidth = 1.5;
 	this.c.beginPath();
 
 	//mathographics page 126
-	//for(var n = 1; n<10;n++){
-	var r = 50;
-	for(var a = 0; a<360; a+=360/30){
-		var x = r*Math.cos(a);
-		var y = r*Math.sin(a);
-		if(a===0) this.c.moveTo(x,y);
-		//this.c.lineTo(x,y);
-		this.c.fillRect(x,y,1,1);
+	if(this.n<1000){
+
+		var r = this.r;
+		for(var a = 0; a<360; a+=360/180){
+			var x = r*Math.cos(a);
+			var y = r*Math.sin(a);
+			if(a===0) this.c.moveTo(x,y);
+			//this.c.lineTo(x,y);
+			this.c.fillRect(x,y,1,1);
+		}
 	}
-	//}
 
 	this.c.stroke();
+	this.c.restore();
 };
 
 Canvas.prototype.clear = function(){

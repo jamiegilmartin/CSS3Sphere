@@ -232,5 +232,6 @@ World.prototype.updateMove = function(){
 World.prototype.run = function(){
 	if(this.sun) this.sun.run();
 	if(this.particleSystem) this.particleSystem.run();
+	if(this.canvas) this.canvas.run();
 };
 
