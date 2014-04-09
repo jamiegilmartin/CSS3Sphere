@@ -55,7 +55,7 @@ Canvas.prototype.clear = function(){
 Canvas.prototype.fade = function(){
 	this.c.save();
 	this.topLeft();
-	this.c.fillStyle = 'rgba(9,104,224,.1)';
+	this.c.fillStyle = 'rgba(9,104,224,0.01)';
 	this.c.fillRect( 0, 0, this.w, this.h );
 	this.c.restore();
 };
@@ -100,7 +100,34 @@ Canvas.prototype.loadImage = function( image , done ){
 	img.src = image;
 };
 Canvas.prototype.getColorFromImage = function(){
-	return 'rgba(255,255,255,0.6)';
+	if(!this.originalPixels) return;
+
+	var data = this.originalPixels.data;
+	
+	var imageWidth = columns = Math.round(this.originalPixels.width);
+	var imageHeight = rows = Math.round(this.originalPixels.height);
+	var scale = imageWidth;
+
+	for (var i=0, j=0; i<columns && j<rows; j++, i=(j==rows)?i+1:i,j=(j==rows)?j=0:j) {
+			var x = i, y = j;
+
+			var xIndex = x;
+			var yIndex = y;
+			
+			var index = ( xIndex+yIndex*imageWidth ) * 4;
+			
+			var red = data[ index ];
+			var green = data[index + 1];
+			var blue = data[index + 2];
+			var alpha = data[index + 3];
+			
+			var color = 'rgba('+ red+','+ green+','+ blue+','+ (alpha / 255)+')';
+
+			if(alpha>0) return(color);
+		
+	}
+
+	//return 'rgba(255,255,255,0.6)';
 };
 /**
  * drawing a grid
@@ -166,10 +193,13 @@ Canvas.prototype.draw = function(){
 	//mathographics page 126
 	var n = this.n%360; //this.n;
 	var r = this.r%this.w*.5;
-	if(n<1000){
+
+	//console.log(n)
+
+	if(n<10){
 		
 		for(var a = 0; a<360; a+=360/180){
-			var x = r*Math.cos(a+(n*(a%1000)));
+			var x = r*Math.cos(a+(n));
 			var y = r*Math.sin(a+(n));
 			if(a===0) this.c.moveTo(x,y);
 
@@ -178,7 +208,7 @@ Canvas.prototype.draw = function(){
 			this.c.fillStyle = this.getColorFromImage();//'rgba(255,255,255,0.6)';
 
 			this.c.lineTo(x,y);
-			//this.c.fillRect(x,y,1,1);
+			this.c.fillRect(x,y,1,1);
 		}
 		this.n -= this.n*0.1;
 		this.r += this.r*0.01;
@@ -193,7 +223,7 @@ Canvas.prototype.draw = function(){
         translateY( ' +  this.location.y + 'px ) \
         translateZ( ' +  this.location.z + 'px ) \
         rotateZ( ' + this.rotateZ  + 'deg )';
-    //this.element.style[Sphere.myTransform] = t;
+   // this.element.style[Sphere.myTransform] = t;
 };
 
 
