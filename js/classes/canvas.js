@@ -53,7 +53,15 @@ Canvas.prototype.clear = function(){
 	this.c.clearRect( 0, 0, this.w, this.h );
 };
 Canvas.prototype.fade = function(){
+	this.c.save();
+	this.topLeft();
+	this.c.fillStyle = 'rgba(9,104,224,.1)';
 	this.c.fillRect( 0, 0, this.w, this.h );
+	this.c.restore();
+};
+Canvas.prototype.topLeft = function(){
+	//center canvas
+	this.c.translate(-this.w*0.5,-this.h*0.5);
 };
 Canvas.prototype.center = function(){
 	//center canvas
@@ -164,9 +172,12 @@ Canvas.prototype.draw = function(){
 			this.c.fillRect(x,y,1,1);
 		}
 		this.n -= this.n*0.1;
-		//this.r -= this.r*0.01;
+		this.r += this.r*0.01;
 	}
 	this.c.stroke();
+
+	this.fade();
+
 	this.c.restore();
 
 	var t = 'translateX( ' + this.location.x + 'px ) \
