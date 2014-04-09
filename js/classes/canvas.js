@@ -153,8 +153,9 @@ Canvas.prototype.draw = function(){
 	//mathographics page 126
 
 	var n = this.n%360; //this.n;
+	var r = this.r%this.w*.5;
 	if(n<1000){
-		var r = this.r;
+		
 		for(var a = 0; a<360; a+=360/180){
 			var x = r*Math.cos(a+(n));
 			var y = r*Math.sin(a+(n));
@@ -162,7 +163,8 @@ Canvas.prototype.draw = function(){
 			//this.c.lineTo(x,y);
 			this.c.fillRect(x,y,1,1);
 		}
-		this.n-= this.n*0.1;
+		this.n -= this.n*0.1;
+		//this.r -= this.r*0.01;
 	}
 	this.c.stroke();
 	this.c.restore();
