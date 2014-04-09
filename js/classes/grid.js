@@ -116,8 +116,11 @@ Grid.prototype.fillGridWidthImageData =  function( pixels ){
 			
 			var color = 'rgba('+ red+','+ green+','+ blue+','+ (alpha / 255)+')';
 
-			this.surface[x][y].fill( color );
+			if(alpha>0) this.surface[x][y].fill( color );
 			
+			if(!this.surface[x][y].isFull){
+				//console.log(this.surface[x][y])
+			}
 			/*
 			if(alpha>0){
 				var nAlpha = (alpha / 255);

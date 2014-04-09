@@ -50,7 +50,7 @@ function World(){
 
 	this.canvas.loadImage('./images/sun.png', function(data){
 		console.log('sun image loaded');
-		self.grid.fillGridWidthImageData(data);
+		//self.grid.fillGridWidthImageData(data);
 		//self.canvas.drawGrid();
 		//self.canvas.mathographics();
 	});

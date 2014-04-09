@@ -48,6 +48,7 @@ Sphere = {
 		this.runBtn.addEventListener('click',function(){
 			self.playing = self.playing ? false : true;
 			self.runBtn.innerHTML = self.runBtn.innerHTML === 'stop' ? 'run' : 'stop';
+			if(self.playing) self.loop();
 		},false);
 		window.addEventListener('resize',function(){
 			self.scroller.resize();

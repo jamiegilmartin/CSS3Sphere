@@ -2,7 +2,7 @@
  * @Class Canvas
  * @author jamie.gilmartin@ogilvy.com
  */
-function Canvas(name ){
+function Canvas(name){
 	console.log('can obj');
 	this.element = document.createElement('canvas');
 	this.element.classList.add(name);
@@ -38,6 +38,9 @@ function Canvas(name ){
 
 		this.n = 0;
 		this.r = 50;
+
+
+		this.rotateZ = 0;
 		//this.drawGrid();
 	}
 };
@@ -45,22 +48,41 @@ function Canvas(name ){
 Canvas.prototype = new GameObject();
 Canvas.prototype.constructor = Canvas;
 
+//helpers
+Canvas.prototype.clear = function(){
+	this.c.clearRect( 0, 0, this.w, this.h );
+};
+Canvas.prototype.fade = function(){
+	this.c.fillRect( 0, 0, this.w, this.h );
+};
+Canvas.prototype.center = function(){
+	//center canvas
+	this.c.translate(this.w*0.5,this.h*0.5);
+};
+
+//append
 Canvas.prototype.appendToDom = function(parentElement){
 	//set width
 	this.w = this.element.width = parentElement.offsetWidth;
 	this.h = this.element.height = parentElement.offsetHeight;
-
+	this.location = new Vector((parentElement.offsetWidth*.5 - (this.w*.5)),(parentElement.offsetHeight*.5  - (this.h*.5)), 0 );
 	parentElement.appendChild(this.element);
 };
+//load image
 Canvas.prototype.loadImage = function( image , done ){
 	var self = this;
 	var img = new Image();
 	img.crossOrigin = true;
+
 	img.onload = function(){
+		console.log(img.width,img.height)
+		//self.c.drawImage(img, 0, 0, self.w, self.h );//resize to canvas
+		self.c.save();
+		self.center();
+		self.c.drawImage(img, -img.width*.5, -img.height*.5, img.width, img.height );//centered at original image size
 
-		self.c.drawImage(img, 0, 0, self.w, self.h );
 		self.originalPixels = self.c.getImageData(0, 0, self.w, self.h );
-
+		self.c.restore();
 
 		done( self.originalPixels  );
 
@@ -116,43 +138,43 @@ Canvas.prototype.update = function(){
 	this.c.save();
 	this.n++;
 	this.r+=5;
+	this.rotateZ ++;
 	
 };
 Canvas.prototype.draw = function(){
 	//center canvas
 	this.center();
 	//colors
-	//this.c.strokeStyle = "#000";
+	this.c.strokeStyle = 'rgba(255,255,255,0.6)';
+	this.c.fillStyle = 'rgba(255,255,255,0.6)';
 	//this.c.lineWidth = 1.5;
 	this.c.beginPath();
 
 	//mathographics page 126
-	if(this.n<1000){
 
+	var n = this.n%360; //this.n;
+	if(n<1000){
 		var r = this.r;
 		for(var a = 0; a<360; a+=360/180){
-			var x = r*Math.cos(a);
-			var y = r*Math.sin(a);
+			var x = r*Math.cos(a+(n));
+			var y = r*Math.sin(a+(n));
 			if(a===0) this.c.moveTo(x,y);
 			//this.c.lineTo(x,y);
 			this.c.fillRect(x,y,1,1);
 		}
+		this.n-= this.n*0.1;
 	}
-
 	this.c.stroke();
 	this.c.restore();
+
+	var t = 'translateX( ' + this.location.x + 'px ) \
+        translateY( ' +  this.location.y + 'px ) \
+        translateZ( ' +  this.location.z + 'px ) \
+        rotateZ( ' + this.rotateZ  + 'deg )';
+    //this.element.style[Sphere.myTransform] = t;
 };
 
-Canvas.prototype.clear = function(){
-	this.c.clearRect( 0, 0, this.w, this.h );
-};
-Canvas.prototype.fade = function(){
-	this.c.fillRect( 0, 0, this.w, this.h );
-};
-Canvas.prototype.center = function(){
-	//center canvas
-	this.c.translate(this.w*0.5,this.h*0.5);
-};
+
 
 
 
