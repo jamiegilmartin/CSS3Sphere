@@ -37,7 +37,8 @@ footer {
 }
 /*main output*/
 #timer-output,
-#scroller-output {
+#scroller-output,
+#canvas-output {
 	position:fixed;
 	top:0;
 	padding:10px;
@@ -49,9 +50,12 @@ footer {
 #scroller-output {
 	top:30px;
 }
-
+#canvas-output {
+	top:70px;
+}
 .sun-canvas {
 	position: absolute;
+	z-index: 1;
 	top:0;
 	left:0;
 	border:1px dotted @pink;
@@ -87,8 +91,8 @@ footer {
 			position: absolute;
 			border:1px dotted @blue;
 		}
-
 		#world {
+			z-index: 2;
 		    width: 512px;
 		    height: 512px;
 		    top: 50%;
@@ -211,7 +215,7 @@ footer {
 				    //background-color: rgba(0,255,255,.1);
 				    background-image: url('../images/cloud.png');
 				    .background-size(cover);
-				    border:1px solid @pink;
+				    //border:1px solid @pink;
 				}
 			}
 		}

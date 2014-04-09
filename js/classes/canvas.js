@@ -9,7 +9,7 @@ function Canvas(name){
 
 	//this.w = this.element.width = window.innerWidth;
 	//this.h = this.element.height = window.innerHeight;
-	
+	this.output = document.getElementById('canvas-output')	
 
 	//time
 	this.startTime = Date.now();
@@ -53,7 +53,7 @@ Canvas.prototype.clear = function(){
 Canvas.prototype.fade = function(){
 	this.c.save();
 	this.topLeft();
-	this.c.fillStyle = 'rgba(9,104,224,0.01)';
+	this.c.fillStyle = 'rgba(9,104,224,0.1)';
 	this.c.fillRect( 0, 0, this.w, this.h );
 	this.c.restore();
 };
@@ -100,7 +100,6 @@ Canvas.prototype.loadImage = function( image , done ){
 	img.src = image;
 };
 Canvas.prototype.getColorFromImage = function(){
-	if(!this.originalPixels) return;
 
 	var data = this.originalPixels.data;
 	
@@ -123,18 +122,30 @@ Canvas.prototype.getColorFromImage = function(){
 			var green = data[index + 1];
 			var blue = data[index + 2];
 			var alpha = data[index + 3];
-			
-			var color = 'rgba('+ red+','+ green+','+ blue+','+ (alpha / 255)+')';
-
-			
 
 			if(alpha>0.01){
+
+				var color = {
+					r : red,
+					g : green,
+					b : blue,
+					a : alpha
+				};
 				this.imageColors.push(color);
 			}
 		}	
 	//}
-	console.log(this.imageColors.length)
+	//console.log(this.imageColors.length)
 
+};
+Canvas.prototype.getColorByPos = function(x,y,r){
+	var ratioToRadius = this.imageColors.length * r ;
+	//console.log(ratioToRadius)
+	var c = this.imageColors[y];
+	var color =  c ? 'rgba('+c.r+','+c.g+','+c.b+','+c.a+')' : 'rgba(255,255,255,0.1)';
+	this.output.innerHTML = color;
+	return color;
+	//return 'rgba(255,255,255,0.1)';
 };
 /**
  * drawing a grid
@@ -186,7 +197,7 @@ Canvas.prototype.drawGrid = function(  ){
 Canvas.prototype.update = function(){
 	this.c.save();
 	this.n++;
-	this.r+=5;
+	this.r+=50;
 	this.rotateZ ++;
 	
 };
@@ -199,34 +210,36 @@ Canvas.prototype.draw = function(){
 
 	//mathographics page 126
 	var n = this.n%360; //this.n;
+	//var n = 0;
 	var r = this.r%this.w*.5;
 
 	//console.log(n)
 
 	if(n<10){
 		
-		for(var a = 0; a<360; a+=360/180){
+		for(var a = 0; a<360; a+=360/180){//
 			var x = r*Math.cos(a+(n));
 			var y = r*Math.sin(a+(n));
 			if(a===0) this.c.moveTo(x,y);
 
 			//colors
-			this.c.strokeStyle = this.imageColors[utils.randIntRange(0,this.imageColors.length-1)];
-			this.c.fillStyle = this.imageColors[utils.randIntRange(0,this.imageColors.length-1)];
+			//var color = this.getColorByPos(x,y,r);
+			this.c.strokeStyle = 'rgba(255,255,255,0.05)';
+			this.c.fillStyle = 'rgba(255,255,255,0.1)';
 
 
-			//this.c.lineTo(x,y);
-			//this.c.fillRect(x,y,3,3);
+			this.c.lineTo(x,y);
+			this.c.fillRect(x,y,1,1);
 			//this.c.quadraticCurveTo(0,0,x,y);
 			//this.c.bezierCurveTo(n,n,x+n,y+n,x,y);
-			this.c.arcTo(x,y,x*n,y*n,r)
+			//this.c.arcTo(x,y,x*n,y*n,r)
 		}
-		this.n -= this.n*0.1;
-		this.r += this.r*0.01;
+		//this.n -= this.n*0.1;
+		this.r -= this.r*0.01;
 	}
 	this.c.stroke();
 
-	this.c.globalAlpha = (1/n)//*Math.random();
+	this.c.globalAlpha = Math.random();
 
 	this.fade();
 

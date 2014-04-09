@@ -17,9 +17,11 @@ function World(){
 	this.viewport.style.WebkitPerspective = this.perspective;
 
 	//center 'c'
+	this.w = this.world.offsetWidth;
+	this.h = this.world.offsetHeight;
 	this.c = {
-		x : this.world.offsetWidth / 2,
-		y : this.world.offsetHeight / 2
+		x : this.w / 2,
+		y : this.h / 2
 	}
 
 	//centering div
@@ -36,8 +38,8 @@ function World(){
 
 
   	//sun canvas
-  	//this.sun = new Sun(this);
-  	//this.world.appendChild( this.sun.element );
+  	this.sun = new Sun(this);
+  	this.world.appendChild( this.sun.element );
 
   	//set up canvas to get colors
 	this.canvas = new Canvas('sun-canvas');
@@ -55,13 +57,31 @@ function World(){
 		//self.canvas.mathographics();
 	});
 
+	//array of cloud bases
+	this.numberOfClouds = 2;
+	this.clouds = [];
 
-	
+	var cloud1 = new Cloud( -this.c.x , this.c.y  , 0)
+	this.clouds.push( cloud1 );
+	this.world.appendChild( cloud1.element );
+
+	var cloud2 = new Cloud( this.w +this.c.x , this.c.y  , 0)
+	this.clouds.push( cloud2 );
+	this.world.appendChild( cloud2.element );
+
+	/*
+	for(var i=0;i<this.numberOfClouds;i++){
+		var cloud = new Cloud( this.c.x + (Math.random()*-this.w) , this.c.y + (Math.random()*+this.h)  , 0)
+		this.clouds.push( cloud );
+		this.world.appendChild( cloud.element );
+	}*/
+		
 
     //make axis
-    //this.axisHelper();
-    //this.sphericalHelper();
-   	//this.events();
+   	this.axisHelper();
+    this.sphericalHelper();
+   	this.events();
+
 };
 //inherits GameObject
 World.prototype = new GameObject();
@@ -233,5 +253,9 @@ World.prototype.run = function(){
 	if(this.sun) this.sun.run();
 	if(this.particleSystem) this.particleSystem.run();
 	if(this.canvas) this.canvas.run();
+
+	for(var i=0;i<this.clouds.length;i++){
+		this.clouds[i].run();
+	}
 };
 

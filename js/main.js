@@ -37,7 +37,7 @@ Sphere = {
 
 		//this.scrollPercentage =  window.pageYOffset  / ( document.body.offsetHeight  - window.innerHeight);
 		this.scroller = new Scroller(function(percentage){
-			//console.log( percentage )
+			//console.log('scroller', percentage )
 			//self.viewport.style.top = percentage + '%';//window.pageYOffset + 'px'
 		});
 

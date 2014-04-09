@@ -22,7 +22,7 @@ function Sun(world){
 };
 //inherits GameObject
 Sun.prototype = new GameObject();
-Sun.prototype.constructor = Canvas;
+Sun.prototype.constructor = Sun;
 
 /**
  * update
