@@ -99,6 +99,9 @@ Canvas.prototype.loadImage = function( image , done ){
 	}
 	img.src = image;
 };
+Canvas.prototype.getColorFromImage = function(){
+	return 'rgba(255,255,255,0.6)';
+};
 /**
  * drawing a grid
  * slow as ass TODO: try linetos
@@ -142,6 +145,10 @@ Canvas.prototype.drawGrid = function(  ){
 		}
 	}
 };
+
+/**
+ * animation functions
+ */
 Canvas.prototype.update = function(){
 	this.c.save();
 	this.n++;
@@ -152,24 +159,26 @@ Canvas.prototype.update = function(){
 Canvas.prototype.draw = function(){
 	//center canvas
 	this.center();
-	//colors
-	this.c.strokeStyle = 'rgba(255,255,255,0.6)';
-	this.c.fillStyle = 'rgba(255,255,255,0.6)';
+	
 	//this.c.lineWidth = 1.5;
 	this.c.beginPath();
 
 	//mathographics page 126
-
 	var n = this.n%360; //this.n;
 	var r = this.r%this.w*.5;
 	if(n<1000){
 		
 		for(var a = 0; a<360; a+=360/180){
-			var x = r*Math.cos(a+(n));
+			var x = r*Math.cos(a+(n*(a%1000)));
 			var y = r*Math.sin(a+(n));
 			if(a===0) this.c.moveTo(x,y);
-			//this.c.lineTo(x,y);
-			this.c.fillRect(x,y,1,1);
+
+			//colors
+			this.c.strokeStyle = this.getColorFromImage();//'rgba(255,255,255,0.6)';
+			this.c.fillStyle = this.getColorFromImage();//'rgba(255,255,255,0.6)';
+
+			this.c.lineTo(x,y);
+			//this.c.fillRect(x,y,1,1);
 		}
 		this.n -= this.n*0.1;
 		this.r += this.r*0.01;
