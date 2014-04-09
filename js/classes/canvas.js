@@ -23,10 +23,8 @@ function Canvas(name){
 
 	this.playing = true;
 	
-
-	//append
-	//parent.appendChild( this.element );
-	
+	this.imageColors = [];
+		
 	if (this.element.getContext){  
 		this.c = this.element.getContext('2d');
 		// drawing code here
@@ -92,6 +90,8 @@ Canvas.prototype.loadImage = function( image , done ){
 		self.originalPixels = self.c.getImageData(0, 0, self.w, self.h );
 		self.c.restore();
 
+		self.getColorFromImage();
+
 		done( self.originalPixels  );
 
 
@@ -108,11 +108,14 @@ Canvas.prototype.getColorFromImage = function(){
 	var imageHeight = rows = Math.round(this.originalPixels.height);
 	var scale = imageWidth;
 
-	for (var i=0, j=0; i<columns && j<rows; j++, i=(j==rows)?i+1:i,j=(j==rows)?j=0:j) {
-			var x = i, y = j;
+	
 
-			var xIndex = x;
-			var yIndex = y;
+	//for(var x = 0; x < columns; x++){ 
+		var x = this.w *.5; //just loop down center of image since it's semetrical and save time
+		for(var y = 0; y < rows; y++){
+			
+			var xIndex = Math.round(x);
+			var yIndex = Math.round(y);
 			
 			var index = ( xIndex+yIndex*imageWidth ) * 4;
 			
@@ -123,11 +126,15 @@ Canvas.prototype.getColorFromImage = function(){
 			
 			var color = 'rgba('+ red+','+ green+','+ blue+','+ (alpha / 255)+')';
 
-			if(alpha>0) return(color);
-		
-	}
+			
 
-	//return 'rgba(255,255,255,0.6)';
+			if(alpha>0.01){
+				this.imageColors.push(color);
+			}
+		}	
+	//}
+	console.log(this.imageColors.length)
+
 };
 /**
  * drawing a grid
@@ -204,16 +211,19 @@ Canvas.prototype.draw = function(){
 			if(a===0) this.c.moveTo(x,y);
 
 			//colors
-			this.c.strokeStyle = this.getColorFromImage();//'rgba(255,255,255,0.6)';
-			this.c.fillStyle = this.getColorFromImage();//'rgba(255,255,255,0.6)';
+			this.c.strokeStyle = this.imageColors[utils.randIntRange(0,this.imageColors.length-1)];
+			this.c.fillStyle = this.imageColors[utils.randIntRange(0,this.imageColors.length-1)];
+
 
 			this.c.lineTo(x,y);
-			this.c.fillRect(x,y,1,1);
+			this.c.fillRect(x,y,3,3);
 		}
 		this.n -= this.n*0.1;
 		this.r += this.r*0.01;
 	}
 	this.c.stroke();
+
+	this.c.globalAlpha = 1 /  n;
 
 	this.fade();
 
