@@ -40,6 +40,8 @@ function Canvas(name){
 
 		this.rotateZ = 0;
 		//this.drawGrid();
+
+		this.createParticles();
 	}
 };
 //inherits GameObject
@@ -65,7 +67,6 @@ Canvas.prototype.center = function(){
 	//center canvas
 	this.c.translate(this.w*0.5,this.h*0.5);
 };
-
 //append
 Canvas.prototype.appendToDom = function(parentElement){
 	//set width
@@ -81,7 +82,7 @@ Canvas.prototype.loadImage = function( image , done ){
 	img.crossOrigin = true;
 
 	img.onload = function(){
-		console.log(img.width,img.height)
+		//console.log(img.width,img.height)
 		//self.c.drawImage(img, 0, 0, self.w, self.h );//resize to canvas
 		self.c.save();
 		self.center();
@@ -151,7 +152,7 @@ Canvas.prototype.getColorByPos = function(x,y,r){
  * drawing a grid
  * slow as ass TODO: try linetos
  */
-Canvas.prototype.drawGrid = function(  ){
+Canvas.prototype.drawGrid = function(){
 	console.log('grrdd')
 	this.square = {};
 	var scale = 20;
@@ -191,17 +192,50 @@ Canvas.prototype.drawGrid = function(  ){
 	}
 };
 
+
+Canvas.prototype.createParticles = function(){
+	//center canvas
+	this.center();
+	//particle system
+    this.particleSystem = new ParticleSystem(this.c, 0,0,0);
+	this.repeller = new Repeller(this.c, 10, 30, 0);
+	this.gravity = new Vector(0,0.01,0);
+  	this.particleSystem.applyForce(this.gravity);
+	//this.particleSystem.applyRepeller( this.repeller );
+
+}
 /**
  * animation functions
  */
 Canvas.prototype.update = function(){
+	this.c.save();
+};
+
+Canvas.prototype.draw = function(){
+	//center canvas
+	this.center();
+
+	this.particleSystem.draw();
+	this.repeller.draw();
+
+	this.fade();
+	this.c.restore();
+};
+
+
+
+/**
+ * animation functions
+ */
+Canvas.prototype.updateX = function(){
 	this.c.save();
 	this.n++;
 	this.r+=50;
 	this.rotateZ ++;
 	
 };
-Canvas.prototype.draw = function(){
+//old
+Canvas.prototype.drawX = function(){
 	//center canvas
 	this.center();
 	
@@ -213,10 +247,12 @@ Canvas.prototype.draw = function(){
 	//var n = 0;
 	var r = this.r%500;
 
+	this.c.strokeStyle = 'rgba(255,255,255,0.09)';
+	this.c.fillStyle = 'rgba(255,255,255,0.9)';
 	//console.log(n)
 
-	if(n<10){
-		
+	if(this.n<100){
+		/*
 		for(var a = 0; a<360; a+=360/180){//
 			var x = r*Math.cos(a+(n));
 			var y = r*Math.sin(a+(n));
@@ -233,14 +269,29 @@ Canvas.prototype.draw = function(){
 			//this.c.quadraticCurveTo(0,0,x,y);
 			//this.c.bezierCurveTo(n,n,x+n,y+n,x,y);
 			//this.c.arcTo(x,y,x*n,y*n,r)
+		}*/
+		
+		for(var a = 0; a<360; a+= n ){
+			var r = 500;
+			var x = r*Math.cos(a);
+			var y = r*Math.sin(a);
+			if(a===0) this.c.moveTo(x,y);
+			if(a===360) this.c.moveTo(x,y);
+			//this.c.fillRect(x,y,1,1);
+			this.c.lineTo(x,y);
 		}
+		
+
+
+
 		//this.n -= this.n*0.1;
 		this.r -= this.r*0.01;
+	}else{
+		this.n = 0;
 	}
 	this.c.stroke();
 
-	this.c.globalAlpha = Math.random();
-
+	//this.c.globalAlpha = Math.random();
 	this.fade();
 
 	this.c.restore();
@@ -249,7 +300,7 @@ Canvas.prototype.draw = function(){
         translateY( ' +  this.location.y + 'px ) \
         translateZ( ' +  this.location.z + 'px ) \
         rotateZ( ' + this.rotateZ  + 'deg )';
-   // this.element.style[Sphere.myTransform] = t;
+    //this.element.style[Sphere.myTransform] = t;
 };
 
 

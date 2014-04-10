@@ -3,11 +3,9 @@
  * @author jamie.gilmartin@ogilvy.com
  * @see http://natureofcode.com/book/chapter-4-particle-systems/
  */
-function Particle(x,y,z){
-	//set ele
-	this.element = document.createElement('div');
-	this.element.className = 'particle';
-
+function Particle(c,x,y,z){
+	this.c = c;
+	
 	this.location = new Vector(x,y,z);
 
 	var v1 = Math.random(-.1,.1),
@@ -15,7 +13,7 @@ function Particle(x,y,z){
 	this.velocity = new Vector(v1,v2,0);
 	this.acceleration = new Vector(0,0,0);
 
-	this.lifeSpan =  255;
+	this.lifeSpan =  1;
 	this.mass = 1;
 
 };
@@ -31,6 +29,7 @@ Particle.prototype.constructor = Particle;
 Particle.prototype.applyForce = function( force ){
   	var f = force.multiply(this.mass);
     this.acceleration = this.acceleration.add(f);
+
 };
 
 /**
@@ -40,17 +39,18 @@ Particle.prototype.update = function(){
 	this.velocity = this.velocity.add(this.acceleration);
 	this.location = this.location.add(this.velocity);
 
-	this.lifeSpan -= 2;
+	this.lifeSpan -= .005;
 };
 
 /**
  * draw
  */
 Particle.prototype.draw = function(){
-	var t = 'translateX( ' + this.location.x + 'px ) \
-        translateY( ' +  this.location.y + 'px ) \
-        translateZ( ' +  this.location.z + 'px )';
-    this.element.style[Sphere.myTransform] = t;
+	this.c.beginPath();
+	this.c.strokeStyle = 'rgba(255,0,0,'+this.lifeSpan+')';
+	this.c.fillStyle = 'rgba(0,255,0,'+this.lifeSpan+')';
+	this.c.fillRect(this.location.x,this.location.y,10,10);
+	this.c.stroke();
 };
 
 Particle.prototype.isDead = function(){

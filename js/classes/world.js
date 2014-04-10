@@ -31,19 +31,9 @@ function World(){
 	//centering div
 	//this.center();
 
-    //particle system
-    //this.particleSystem = new ParticleSystem( this );
-	////this.repeller = new Repeller( this.c.x+10, this.c.y+30, 0);
-	//this.gravity = new Vector(0,0.01,0);
-  	//this.particleSystem.applyForce(this.gravity);
-	//this.particleSystem.applyRepeller( this.repeller );
-
-	//this.world.appendChild( this.repeller.element );
-
-
   	//sun canvas
-  	this.sun = new Sun(this);
-  	this.world.appendChild( this.sun.element );
+  	//this.sun = new Sun(this);
+  	//this.world.appendChild( this.sun.element );
 
   	//set up canvas to get colors
 	this.canvas = new Canvas('sun-canvas');
@@ -53,25 +43,26 @@ function World(){
 	this.grid = new Grid();
 	//document.body.appendChild(this.grid.element);
 
-
+	/*
 	this.canvas.loadImage('./images/sun.png', function(data){
 		console.log('sun image loaded');
 		//self.grid.fillGridWidthImageData(data);
 		//self.canvas.drawGrid();
 		//self.canvas.mathographics();
 	});
-
+	*/
+	
 	//array of cloud bases
 	this.numberOfClouds = 2;
 	this.clouds = [];
 
-	var cloud1 = new Cloud( this, -this.c.x , this.c.y  , 0)
-	this.clouds.push( cloud1 );
-	this.world.appendChild( cloud1.element );
+	//var cloud1 = new Cloud( this, -this.c.x , this.c.y  , 0)
+	//this.clouds.push( cloud1 );
+	//this.world.appendChild( cloud1.element );
 
-	var cloud2 = new Cloud(  this, this.w +this.c.x , this.c.y  , 0)
-	this.clouds.push( cloud2 );
-	this.world.appendChild( cloud2.element );
+	//var cloud2 = new Cloud(  this, this.w +this.c.x , this.c.y  , 0)
+	//this.clouds.push( cloud2 );
+	//this.world.appendChild( cloud2.element );
 
 	/*
 	for(var i=0;i<this.numberOfClouds;i++){
@@ -83,8 +74,8 @@ function World(){
 
     //make axis
    	this.axisHelper();
-    this.sphericalHelper();
-   	this.events();
+    //this.sphericalHelper();
+   	//this.events();
 
 };
 //inherits GameObject
@@ -264,10 +255,10 @@ World.prototype.run = function(){
 };
 
 World.prototype.updateOnScroll = function(percentage){
-	this.sun.location.y = percentage * this.sun.originalLocation.x;
+	if(this.sun) this.sun.location.y = percentage * this.sun.originalLocation.x;
 
 	for(var i=0;i<this.clouds.length;i++){
-	this.clouds[i].location.x += percentage;
+		this.clouds[i].location.x += percentage;
 	}
 };
 
