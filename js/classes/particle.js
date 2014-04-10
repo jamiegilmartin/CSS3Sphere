@@ -8,8 +8,8 @@ function Particle(c,x,y,z){
 	
 	this.location = new Vector(x,y,z);
 
-	var v1 = Math.random(-.1,.1),
-		v2 = Math.random(-.2,0);
+	var v1 = utils.randFloatRange(-1,1),
+		v2 = utils.randFloatRange(-2,0);
 	this.velocity = new Vector(v1,v2,0);
 	this.acceleration = new Vector(0,0,0);
 
@@ -28,17 +28,16 @@ Particle.prototype.constructor = Particle;
  */
 Particle.prototype.applyForce = function( force ){
   	var f = force.multiply(this.mass);
-    this.acceleration = this.acceleration.add(f);
-
+    this.acceleration.add(f);
 };
 
 /**
  * update
  */
 Particle.prototype.update = function(){
-	this.velocity = this.velocity.add(this.acceleration);
-	this.location = this.location.add(this.velocity);
-
+	this.velocity.add(this.acceleration);
+	this.location.add(this.velocity);
+	//this.acceleration.multiply(0);
 	this.lifeSpan -= .005;
 };
 
@@ -48,8 +47,8 @@ Particle.prototype.update = function(){
 Particle.prototype.draw = function(){
 	this.c.beginPath();
 	this.c.strokeStyle = 'rgba(255,0,0,'+this.lifeSpan+')';
-	this.c.fillStyle = 'rgba(0,255,0,'+this.lifeSpan+')';
-	this.c.fillRect(this.location.x,this.location.y,10,10);
+	this.c.fillStyle = 'rgba(255,0,255,'+this.lifeSpan+')';
+	this.c.fillRect(this.location.x,this.location.y,5,5);
 	this.c.stroke();
 };
 

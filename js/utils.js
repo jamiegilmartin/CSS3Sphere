@@ -7,6 +7,9 @@ utils.randIntRange = function (min, max, roundTo ) {
 	if( roundTo != undefined ) val = Math.round(val/roundTo) * roundTo;
 	return val;
 };
+utils.randFloatRange = function (min, max) {
+    return Math.random()*(max-min) + min;
+};
 //http://stackoverflow.com/questions/7264899/detect-css-transitions-using-javascript-and-without-modernizr
 utils.supportsTransitions = function() {
     var b = document.body || document.documentElement;

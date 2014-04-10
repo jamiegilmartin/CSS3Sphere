@@ -50,7 +50,10 @@ Canvas.prototype.constructor = Canvas;
 
 //helpers
 Canvas.prototype.clear = function(){
+	this.c.save();
+	this.topLeft();
 	this.c.clearRect( 0, 0, this.w, this.h );
+	this.c.restore();
 };
 Canvas.prototype.fade = function(){
 	this.c.save();
@@ -198,10 +201,8 @@ Canvas.prototype.createParticles = function(){
 	this.center();
 	//particle system
     this.particleSystem = new ParticleSystem(this.c, 0,0,0);
-	this.repeller = new Repeller(this.c, 10, 30, 0);
-	this.gravity = new Vector(0,0.01,0);
-  	this.particleSystem.applyForce(this.gravity);
-	//this.particleSystem.applyRepeller( this.repeller );
+	this.repeller = new Repeller(this.c, 0, 100, 0);
+	this.gravity = new Vector(0,0.05,0);
 
 }
 /**
@@ -217,6 +218,10 @@ Canvas.prototype.draw = function(){
 
 	this.particleSystem.draw();
 	this.repeller.draw();
+
+  	this.particleSystem.applyForce(this.gravity);
+	this.particleSystem.applyRepeller( this.repeller );
+
 
 	this.fade();
 	this.c.restore();

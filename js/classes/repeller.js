@@ -5,11 +5,11 @@
  */
 function Repeller(c,x,y,z){
 	this.c = c;
-	this.strength = 100;
+	
 
 	this.location = new Vector(x,y,z);
 
-
+	this.strength = 200;
 };
 //inherits GameObject
 Repeller.prototype = new GameObject();
@@ -20,10 +20,14 @@ Repeller.prototype.constructor = Repeller;
  * repel
  */
 Repeller.prototype.repel = function( p ){
-	var dir = this.location.subtract( p.location );
+	var loc =  this.location.copy();
+	var dir = loc.subtract( p.location.copy() );
+
 	var distance = dir.magnitude();
-	distance = utils.clamp(distance,5,100);
 	dir.normalize();
+
+	distance = utils.clamp(distance,5,100);
+	
 	var force = -1 * this.strength / (distance * distance);
     dir = dir.multiply(force);
     return dir;
@@ -43,7 +47,7 @@ Repeller.prototype.draw = function(){
 	this.c.beginPath();
 	this.c.strokeStyle = 'rgba(255,255,255,0.09)';
 	this.c.fillStyle = 'rgba(255,0,0,0.9)';
-	this.c.fillRect(this.location.x,this.location.y,40,40);
+	this.c.fillRect(this.location.x,this.location.y,30,30);
 	this.c.stroke();
 };
 

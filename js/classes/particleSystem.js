@@ -9,7 +9,7 @@ function ParticleSystem(c,x,y,z){
 	this.origin = new Vector(x,y,z);
 
 
-	for(var i=0;i<120;i++){
+	for(var i=0;i<100;i++){
 		this.make();
 	}
 };
