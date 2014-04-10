@@ -37,7 +37,7 @@ Particle.prototype.applyForce = function( force ){
 Particle.prototype.update = function(){
 	this.velocity.add(this.acceleration);
 	this.location.add(this.velocity);
-	//this.acceleration.multiply(0);
+	this.acceleration.multiply(0);
 	this.lifeSpan -= .005;
 };
 

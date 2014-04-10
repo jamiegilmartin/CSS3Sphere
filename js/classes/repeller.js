@@ -9,7 +9,7 @@ function Repeller(c,x,y,z){
 
 	this.location = new Vector(x,y,z);
 
-	this.strength = 200;
+	this.strength = 100;
 };
 //inherits GameObject
 Repeller.prototype = new GameObject();
@@ -21,7 +21,7 @@ Repeller.prototype.constructor = Repeller;
  */
 Repeller.prototype.repel = function( p ){
 	var loc =  this.location.copy();
-	var dir = loc.subtract( p.location.copy() );
+	var dir = loc.subtract( p.location );
 
 	var distance = dir.magnitude();
 	dir.normalize();

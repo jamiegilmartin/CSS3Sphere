@@ -201,8 +201,8 @@ Canvas.prototype.createParticles = function(){
 	this.center();
 	//particle system
     this.particleSystem = new ParticleSystem(this.c, 0,0,0);
-	this.repeller = new Repeller(this.c, 0, 100, 0);
-	this.gravity = new Vector(0,0.05,0);
+	this.repeller = new Repeller(this.c, 0, 40, 0);
+	this.gravity = new Vector(0,0.1,0);
 
 }
 /**
