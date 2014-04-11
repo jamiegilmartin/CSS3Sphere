@@ -50,6 +50,7 @@ Particle.prototype.draw = function(){
 	this.c.fillStyle = 'rgba(255,0,255,'+this.lifeSpan+')';
 	this.c.fillRect(this.location.x,this.location.y,5,5);
 	this.c.stroke();
+	this.c.closePath();
 };
 
 Particle.prototype.isDead = function(){

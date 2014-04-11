@@ -9,7 +9,7 @@ function Repeller(c,x,y,z){
 
 	this.location = new Vector(x,y,z);
 
-	this.strength = 100;
+	this.strength = 50;
 };
 //inherits GameObject
 Repeller.prototype = new GameObject();
@@ -47,7 +47,8 @@ Repeller.prototype.draw = function(){
 	this.c.beginPath();
 	this.c.strokeStyle = 'rgba(255,255,255,0.09)';
 	this.c.fillStyle = 'rgba(255,0,0,0.9)';
-	this.c.fillRect(this.location.x,this.location.y,30,30);
+	this.c.fillRect(this.location.x-5,this.location.y,10,10);
 	this.c.stroke();
+	this.c.closePath();
 };
 

@@ -40,7 +40,7 @@ function World(){
 	this.canvas.appendToDom(this.viewport);//don't need in dom
 
 	//set up grid to display colors
-	this.grid = new Grid();
+	//this.grid = new Grid();
 	//document.body.appendChild(this.grid.element);
 
 	/*
@@ -51,7 +51,7 @@ function World(){
 		//self.canvas.mathographics();
 	});
 	*/
-	
+
 	//array of cloud bases
 	this.numberOfClouds = 2;
 	this.clouds = [];
@@ -73,7 +73,7 @@ function World(){
 		
 
     //make axis
-   	this.axisHelper();
+   	//this.axisHelper();
     //this.sphericalHelper();
    	//this.events();
 

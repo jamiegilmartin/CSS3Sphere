@@ -42,6 +42,7 @@ function Canvas(name){
 		//this.drawGrid();
 
 		this.createParticles();
+		this.flock();
 	}
 };
 //inherits GameObject
@@ -201,10 +202,36 @@ Canvas.prototype.createParticles = function(){
 	this.center();
 	//particle system
     this.particleSystem = new ParticleSystem(this.c, 0,0,0);
-	this.repeller = new Repeller(this.c, 0, 40, 0);
+	this.repeller1 = new Repeller(this.c, 0, 40, 0);
+	this.repeller2 = new Repeller(this.c, -60, 60, 0);
+	this.repeller3 = new Repeller(this.c, 60, 60, 0);
+	this.repeller4 = new Repeller(this.c, -60, -20, 0);
+	this.repeller5 = new Repeller(this.c, 60, -20, 0);
 	this.gravity = new Vector(0,0.1,0);
 
-}
+};
+
+Canvas.prototype.flock = function(){
+	//center canvas
+	this.center();
+
+
+	this.boids = [];
+
+	for(var i=0;i<150;i++){
+		var lx = utils.randIntRange(-100,100),
+			ly = utils.randIntRange(-100,100);
+		this.boids.push(new Boid(this, lx, ly, 0) );
+
+	}
+
+	//event
+	this.element.addEventListener('click',function(e){
+
+	},false);
+};
+
+
 /**
  * animation functions
  */
@@ -215,12 +242,26 @@ Canvas.prototype.update = function(){
 Canvas.prototype.draw = function(){
 	//center canvas
 	this.center();
-
+	/*
 	this.particleSystem.draw();
-	this.repeller.draw();
+	this.repeller1.draw();
+	this.repeller2.draw()
+	this.repeller3.draw()
+	this.repeller4.draw()
+	this.repeller5.draw()
 
   	this.particleSystem.applyForce(this.gravity);
-	this.particleSystem.applyRepeller( this.repeller );
+	this.particleSystem.applyRepeller( this.repeller1 );
+	this.particleSystem.applyRepeller( this.repeller2 );
+	this.particleSystem.applyRepeller( this.repeller3 );
+	this.particleSystem.applyRepeller( this.repeller4 );
+	this.particleSystem.applyRepeller( this.repeller5 );
+	*/
+
+
+	for(var i=0;i<150;i++){
+		this.boids[i].run(this.boids);
+	}
 
 
 	this.fade();
@@ -296,6 +337,7 @@ Canvas.prototype.drawX = function(){
 	}
 	this.c.stroke();
 
+	this.c.closePath();
 	//this.c.globalAlpha = Math.random();
 	this.fade();
 

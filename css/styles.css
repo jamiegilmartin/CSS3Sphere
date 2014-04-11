@@ -79,7 +79,6 @@ footer {
   -webkit-perspective: 1000px;
   -moz-perspective: 1000px;
   perspective: 1000px;
-  border: 4px solid red;
 }
 .mainContainer #viewport .sun {
   position: absolute;
@@ -221,6 +220,7 @@ footer {
   left: 45%;
   text-align: center;
   font-family: monospace;
+  display: none;
 }
 .mainContainer #scroller .scene div.output p {
   color: #eee;
