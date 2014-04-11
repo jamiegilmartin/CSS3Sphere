@@ -326,51 +326,8 @@ Canvas.prototype.draw = function(){
 
 	//draw mouse down
 	if(this.mouse.down){
-		this.c.save();
-		this.c.translate(this.mouse.x, this.mouse.y);
-		this.c.rotate(this.rotationIteration % 360);
-		this.c.beginPath();
-		this.c.strokeStyle = 'rgba(50,255,50,1)';
-		this.c.fillStyle = 'rgba(100,255,100,0.3)';
-
-		
-		this.c.moveTo(0,0);
-
-		//for(var a = 0; a<360; a+= 360/8 ){
-		for(var a = 0; a<2*Math.PI; a+=Math.PI/5){
-			var r = this.mouse.radius*10;
-			console.log(a)
-			var x = r*Math.cos(a);
-			var y = r*Math.sin(a);
-			var firstX, firstY;
-			if(a===0 ){
-				firstX = x;
-				firstY = y;
-				this.c.moveTo(x,y);
-			}else{
-				this.c.fillStyle = 'rgba(100,255,100,0.3)';
-				//this.c.fillRect(x-4,y-4,8,8);
-				this.c.lineTo(x,y);
-			}
-			if(a===utils.radians(315)){
-				
-			}
-			//a shell :)
-			this.c.lineTo(firstX,firstY);
-		}
-
-		//this.c.lineTo(-this.r, this.r*2);
-		//this.c.lineTo(this.r, this.r*2);
-		//this.c.lineTo(0, 0);
-	    this.c.fill();
-		
-		//this.c.fillRect(this.location.x,this.location.y,15,15);
-		//this.c.fillRect(0, -this.r*2,5,5);	
-
-		this.c.stroke();
-		this.c.closePath();
-
-		this.c.restore();
+		this.drawCircle();
+		//this.drawLeaf();
 	}
 	
 
@@ -379,8 +336,101 @@ Canvas.prototype.draw = function(){
 	//this.fade();
 	//this.c.restore();
 };
+Canvas.prototype.drawCircle = function(){
+	this.c.save();
+	this.c.translate(this.mouse.x, this.mouse.y);
+	this.c.rotate(this.rotationIteration % 360);
+	this.c.beginPath();
+	this.c.strokeStyle = 'rgba(50,255,50,1)';
+	this.c.fillStyle = 'rgba(100,255,100,0.3)';
 
+	
+	this.c.moveTo(0,0);
 
+	//for(var a = 0; a<360; a+= 360/8 ){
+	for(var a = 0; a<2*Math.PI; a+=Math.PI/5){
+		var r = this.mouse.radius*10;
+		console.log(a)
+		var x = r*Math.cos(a);
+		var y = r*Math.sin(a);
+		var firstX, firstY;
+		if(a===0 ){
+			firstX = x;
+			firstY = y;
+			this.c.moveTo(x,y);
+			this.c.fillRect(x-4,y-4,8,8);
+		}else{
+			if(a===utils.radians(315)){
+				//a shell :)
+				this.c.fillRect(x-4,y-4,8,8);
+			}
+
+			this.c.fillRect(x-4,y-4,8,8);
+			this.c.lineTo(x,y);
+		}
+				
+	}
+	this.c.lineTo(firstX,firstY);
+	//this.c.lineTo(-this.r, this.r*2);
+	//this.c.lineTo(this.r, this.r*2);
+	//this.c.lineTo(0, 0);
+    this.c.fill();
+	
+	//this.c.fillRect(this.location.x,this.location.y,15,15);
+	//this.c.fillRect(0, -this.r*2,5,5);	
+
+	this.c.stroke();
+	this.c.closePath();
+
+	this.c.restore();
+};
+Canvas.prototype.drawLeaf = function(){
+	this.c.save();
+	this.c.translate(this.mouse.x, this.mouse.y);
+	this.c.rotate(this.rotationIteration % 360);
+	this.c.beginPath();
+	this.c.strokeStyle = 'rgba(50,255,50,1)';
+	this.c.fillStyle = 'rgba(100,255,100,0.3)';
+
+	
+	this.c.moveTo(0,0);
+
+	//for(var a = 0; a<360; a+= 360/8 ){
+	for(var a = 0; a<2*Math.PI; a+=Math.PI/5){
+		var r = this.mouse.radius*10;
+		console.log(a)
+		var x = r*Math.cos(a);
+		var y = r*Math.sin(a);
+		var firstX, firstY;
+		if(a===0 ){
+			firstX = x;
+			firstY = y;
+			this.c.moveTo(x,y);
+		}else{
+			this.c.fillStyle = 'rgba(100,255,100,0.3)';
+			this.c.fillRect(x-4,y-4,8,8);
+			this.c.lineTo(x,y);
+		}
+		if(a===utils.radians(315)){
+			
+		}
+		//a shell :)
+		this.c.lineTo(firstX,firstY);
+	}
+
+	//this.c.lineTo(-this.r, this.r*2);
+	//this.c.lineTo(this.r, this.r*2);
+	//this.c.lineTo(0, 0);
+    this.c.fill();
+	
+	//this.c.fillRect(this.location.x,this.location.y,15,15);
+	//this.c.fillRect(0, -this.r*2,5,5);	
+
+	this.c.stroke();
+	this.c.closePath();
+
+	this.c.restore();
+};
 
 /**
  * animation functions
