@@ -105,6 +105,8 @@ World.prototype.events = function(){
 	    self.perspective = utils.clamp(  self.perspective, 0, 1000);
 	    //console.log('self.perspective',self.perspective)
 		//self.viewport.style.WebkitPerspective = self.perspective + 'px';
+
+
 	});
 };
 

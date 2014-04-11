@@ -44,6 +44,7 @@ function Canvas(name){
 		//this.createParticles();
 		//
 	}
+
 };
 //inherits GameObject
 Canvas.prototype = new GameObject();
@@ -218,27 +219,66 @@ Canvas.prototype.createParticles = function(){
 	this.repeller4 = new Repeller(this.c, -60, -20, 0);
 	this.repeller5 = new Repeller(this.c, 60, -20, 0);
 	this.gravity = new Vector(0,0.1,0);
-
 };
 
 Canvas.prototype.flock = function(){
 	//center canvas
 	//this.center();
-
+	var numOfBoids = 10;
 
 	this.boids = [];
 
-	for(var i=0;i<105;i++){
-		var lx = utils.randIntRange(0,this.w),
-			ly = utils.randIntRange(0,this.h);
+	for(var i=0;i<numOfBoids;i++){
+		var lx = this.w/2,//utils.randIntRange(0,this.w),
+			ly = this.h/2;//utils.randIntRange(0,this.h);
 		this.boids.push(new Boid(this, lx, ly, 0) );
 
 	}
 
-	//event
-	this.element.addEventListener('click',function(e){
-
+	this.mouse = {}
+	this.mouse.x = 0;
+	this.mouse.y = 0;
+	this.mouse.down = false;
+	var self = this;
+	this.element.addEventListener('mousedown',function(e){
+		self.mouse.down = true;
+		self.pushFlock(e.clientX,e.clientY);
 	},false);
+	this.element.addEventListener('mouseup',function(e){
+		self.mouse.down = false;
+	},false);
+};
+
+Canvas.prototype.pushFlock = function(x,y){
+	var mouseRadius = 5;
+	this.mouse.x = x;
+	this.mouse.y = y;
+
+	console.log('click',x,y)
+
+	for(var i=0;i<this.boids.length;i++){
+		var m = new Vector(x,y,0);
+		m.subtract(this.boids[i].location);
+		var d = m.magnitude() - mouseRadius;
+		if(d < 0){
+			d = 0.01;
+		}
+		if(d > 0 && d < this.boids[i].neighbourRadius * 5 ){
+
+			//console.log(d,this.boids[i].neighbourRadius)
+			m.normalize();
+			//m.divide(d * d);
+			m.multiply(-1);
+			var gravity = new Vector(0,0,0);
+			gravity.add(m);
+			gravity.multiply(1.0);
+
+			console.log(gravity)
+			this.boids[i].applyForce(gravity);
+		}
+
+		
+	}
 };
 
 
@@ -249,6 +289,11 @@ Canvas.prototype.update = function(){
 	//this.c.save();
 
 	this.c.clearRect( 0, 0, this.w, this.h );
+
+	//keep applying mouse force
+	if(this.mouse.down){
+		this.pushFlock(this.mouse.x,this.mouse.y);
+	}
 };
 
 Canvas.prototype.draw = function(){

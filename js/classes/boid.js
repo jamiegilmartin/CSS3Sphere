@@ -24,7 +24,7 @@ function Boid(constructor,x,y,z){
 	this.maxForce = 0.03;
 
 	this.wrapFactor =1;
-	this.desiredSeparation = 25;
+	this.desiredSeparation = 5;
 	this.neighbourRadius = 50;
 
 	var twor;
@@ -114,6 +114,7 @@ Boid.prototype.flock = function( boids ){
 	this.applyForce( cohesion );
 
 };
+/*
 Boid.prototype.flockX = function( boids ){
 	var separation = this.separate(boids); //separation
 	var align = this.align(boids); //separation
@@ -211,7 +212,7 @@ Boid.prototype.cohesion = function( boids ){
 		return new Vector(0,0,0);
 	}	
 };
-
+*/
 
 
 //calculates steering force towards a target
