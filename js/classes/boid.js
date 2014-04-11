@@ -24,7 +24,7 @@ function Boid(constructor,x,y,z){
 	this.maxForce = 0.03;
 
 	this.wrapFactor =1;
-	this.desiredSeparation = 6;
+	this.desiredSeparation = 25;
 	this.neighbourRadius = 50;
 
 	var twor;
@@ -50,13 +50,71 @@ Boid.prototype.run = function( boids ){
 	this.borders();
 	this.draw();
 };
-
 Boid.prototype.applyForce = function(force){
 	//could add mass here si tu veux  A = F / M
 	this.acceleration.add(force);
 };
 
+//one loop to handle all forces
 Boid.prototype.flock = function( boids ){
+	var separation_mean = new Vector(0,0,0),
+		alignment_mean = new Vector(0,0,0),
+		cohesion_mean = new Vector(0,0,0),
+		separation_count = 0;
+		alignment_count = 0;
+		cohesion_count = 0;
+	for(var i=0;i<boids.length;i++){
+		var other = boids[i];
+		if(other === this){
+			continue;
+		}
+		d = this.location.euclidean_distance(other.location);
+		if(d>0){
+			if(d <  this.desiredSeparation){
+				var lc = this.location.copy();
+				var diff = lc.subtract(other.location);
+				diff.divide(d); //weight by distance 
+				separation_mean.add(diff);
+				separation_count++;
+			}
+			if(d < this.neighbourRadius){
+				alignment_mean.add(other.velocity);
+				alignment_count ++;
+
+				cohesion_mean.add(other.location.wrapRelativeTo(this.location,this.wrapDimensions));
+				cohesion_count ++
+			}
+		}
+	}
+
+	if (separation_count > 0) {
+		separation_mean.divide(separation_count);
+	}
+	if (alignment_count > 0) {
+		alignment_mean.divide(alignment_count);
+	}
+	if (cohesion_count > 0) {
+		cohesion_mean.divide(cohesion_count);
+	} else {
+		cohesion_mean = this.location.copy();
+	}
+
+	var separation = separation_mean; //separation
+	var align = alignment_mean; //alignment
+	var cohesion = this.seek(cohesion_mean); //cohesion
+
+	//add arbitray weight to these forces
+	separation.multiply(1.5);
+	align.multiply(1.0);
+	cohesion.multiply(1.0);
+
+	//add the force vectors to acceleration
+	this.applyForce( separation );
+	this.applyForce( align );
+	this.applyForce( cohesion );
+
+};
+Boid.prototype.flockX = function( boids ){
 	var separation = this.separate(boids); //separation
 	var align = this.align(boids); //separation
 	var cohesion = this.cohesion(boids); //separation
@@ -71,7 +129,6 @@ Boid.prototype.flock = function( boids ){
 	this.applyForce( align );
 	this.applyForce( cohesion );
 };
-
 // Separation
 // Method checks for nearby boids and steers away
 Boid.prototype.separate = function( boids ){
@@ -154,6 +211,9 @@ Boid.prototype.cohesion = function( boids ){
 		return new Vector(0,0,0);
 	}	
 };
+
+
+
 //calculates steering force towards a target
 //STEER = desired - velocity
 Boid.prototype.seek = function(target){
@@ -181,16 +241,7 @@ Boid.prototype.borders = function(){
 	if (this.location.y > this.wrapDimensions.south) {
 		return this.location.y = this.wrapDimensions.north;
 	}
-	/*
-	//!!!!! NOT WORKING YET
-	//TODO width height
-	if (this.location.x < -this.r) this.location.x = this.w+this.r;
-    if (this.location.y < -this.r) this.location.y = this.h+this.r;
-    if (this.location.x > this.w+this.r) this.location.x = -this.r;
-    if (this.location.y > this.h+this.r) this.location.y = -this.r;
-    */
 };
-
 Boid.prototype.update = function(){
 	//update velocity
 	this.velocity.add(this.acceleration);
@@ -201,10 +252,6 @@ Boid.prototype.update = function(){
 	//reset acceleration
 	this.acceleration.multiply(0);
 };
-
-
-
-
 Boid.prototype.draw = function(target){
 	//draw triangle rotated in direction of velocity //TODO
 	var theta = this.velocity.heading() + (90*(Math.PI/180)); //????
@@ -229,5 +276,17 @@ Boid.prototype.draw = function(target){
 	this.c.closePath();
 
 	this.c.restore();
+
+	/*
+	ctx.font="30px Verdana";
+// Create gradient
+var gradient=ctx.createLinearGradient(0,0,c.width,0);
+gradient.addColorStop("0","magenta");
+gradient.addColorStop("0.5","blue");
+gradient.addColorStop("1.0","red");
+// Fill with gradient
+ctx.fillStyle=gradient;
+ctx.fillText("Big smile!",10,90);
+	*/
 };
 

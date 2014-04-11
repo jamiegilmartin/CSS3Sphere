@@ -228,7 +228,7 @@ Canvas.prototype.flock = function(){
 
 	this.boids = [];
 
-	for(var i=0;i<50;i++){
+	for(var i=0;i<105;i++){
 		var lx = utils.randIntRange(0,this.w),
 			ly = utils.randIntRange(0,this.h);
 		this.boids.push(new Boid(this, lx, ly, 0) );

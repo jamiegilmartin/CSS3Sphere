@@ -79,7 +79,7 @@ Vector.prototype.heading = function() {
 	return -1 * Math.atan2(-1 * this.y, this.x);
 };
 
-Vector.prototype.euclidean_dist = function(other){
+Vector.prototype.euclidean_distance = function(other){
 	var dx, dy, dz;
 
 	dx = this.x - other.x;
