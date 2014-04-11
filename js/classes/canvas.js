@@ -270,12 +270,17 @@ Canvas.prototype.pushFlock = function(x,y){
 			//console.log(d,this.boids[i].neighbourRadius)
 			m.normalize();
 			//m.divide(d * d);
-			m.multiply(-1);
+			m.multiply(-2);
 			var gravity = new Vector(0,0,0);
 			gravity.add(m);
-			gravity.multiply(1.0);
+			gravity.multiply(3.0);
 
 			this.boids[i].applyForce(gravity);
+
+			if(d < this.boids[i].neighbourRadius){
+				this.boids[i] = null;
+				this.boids.splice(i, 1);
+			}
 		}
 
 		
@@ -371,6 +376,8 @@ Canvas.prototype.drawCircle = function(){
 				
 	}
 	this.c.lineTo(firstX,firstY);
+
+
 	//this.c.lineTo(-this.r, this.r*2);
 	//this.c.lineTo(this.r, this.r*2);
 	//this.c.lineTo(0, 0);

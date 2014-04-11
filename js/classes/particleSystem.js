@@ -63,6 +63,7 @@ ParticleSystem.prototype.draw = function(){
 
 		if(this.particles[i].isDead()){
 			//console.log(i, 'is dead')
+			this.particles[i] = null;
 			this.particles.splice(i, 1);
 		}
 	}
