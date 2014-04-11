@@ -225,7 +225,7 @@ Canvas.prototype.flock = function(){
 	//center canvas
 	//this.center();
 	var numOfBoids = 55;
-
+	this.rotationIteration = 0;
 	this.boids = [];
 
 	for(var i=0;i<numOfBoids;i++){
@@ -295,6 +295,8 @@ Canvas.prototype.update = function(){
 	if(this.mouse.down){
 		this.pushFlock(this.mouse.x,this.mouse.y);
 	}
+
+	this.rotationIteration += 0.1;
 };
 
 Canvas.prototype.draw = function(){
@@ -324,9 +326,9 @@ Canvas.prototype.draw = function(){
 
 	//draw mouse down
 	if(this.mouse.down){
-				this.c.save();
+		this.c.save();
 		this.c.translate(this.mouse.x, this.mouse.y);
-
+		this.c.rotate(this.rotationIteration % 360);
 		this.c.beginPath();
 		this.c.strokeStyle = 'rgba(50,255,50,1)';
 		this.c.fillStyle = 'rgba(100,255,100,0.3)';
@@ -335,8 +337,8 @@ Canvas.prototype.draw = function(){
 		this.c.moveTo(0,0);
 
 		//for(var a = 0; a<360; a+= 360/8 ){
-		for(var a = 0; a<2*Math.PI; a+=Math.PI/8){
-			var r = this.mouse.radius*5;
+		for(var a = 0; a<2*Math.PI; a+=Math.PI/5){
+			var r = this.mouse.radius*10;
 			console.log(a)
 			var x = r*Math.cos(a);
 			var y = r*Math.sin(a);
