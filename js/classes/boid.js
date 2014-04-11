@@ -19,9 +19,25 @@ function Boid(constructor,x,y,z){
 	*/
 
 	this.acceleration = new Vector(0,0,0);
-	this.r = 12.0;
+	this.r = 8.0;
 	this.maxSpeed = 2;
 	this.maxForce = 0.03;
+
+	this.wrapFactor =1;
+	this.desiredSeparation = 6;
+	this.neighbourRadius = 50;
+
+	var twor;
+	twor = this.r * 2 * this.wrapFactor;
+	this.wrapDimensions = {
+		north: -twor,
+		south: this.h + twor,
+		west: -twor,
+		east: this.w + twor,
+		width: this.w + 2 * twor,
+		height: this.h + 2 * twor
+	};
+	this.desiredSeparation = this.desiredSeparation * this.r;
 };
 //inherits GameObject
 Boid.prototype = new GameObject();
@@ -59,7 +75,6 @@ Boid.prototype.flock = function( boids ){
 // Separation
 // Method checks for nearby boids and steers away
 Boid.prototype.separate = function( boids ){
-	var desiredSeparation = 25.0;
 	var steer = new Vector(0,0,0);
 	var count = 0;
 	// For every boid in the system, check if it's too close
@@ -67,7 +82,7 @@ Boid.prototype.separate = function( boids ){
 		var lc = this.location.copy();
 		var d = lc.subtract(boids[i].location);
 		//if dist > 0 && < desiredSeparation (0 === yourself)
-		if( (d>0) && (d < desiredSeparation) ){
+		if( (d>0) && (d < this.desiredSeparation) ){
 			//calculate vector pointing away from neighbor
 			var lcc = this.location.copy();
 			var diff = lcc.subtract(boids[i].location);
@@ -94,13 +109,12 @@ Boid.prototype.separate = function( boids ){
 // Alignment
 // For every nearby boid in the system, calculate the average velocity
 Boid.prototype.align = function( boids ){
-	var neighborDist = 50;
 	var sum = new Vector(0,0,0);
 	var count = 0;
 	for(var i=0;i<boids.length;i++){
 		var lc = this.location.copy();
 		var d = lc.distance(boids[i].location);
-		if( (d > 0) && (d < neighborDist) ){
+		if( (d > 0) && (d < this.neighbourRadius) ){
 			sum.add(boids[i].velocity); //add velocity
 			count++;
 		}
@@ -128,7 +142,7 @@ Boid.prototype.cohesion = function( boids ){
 	for(var i=0;i<boids.length;i++){
 		var lc = this.location.copy();
 		var d = lc.distance(boids[i].location);
-		if( (d > 0) && (d < neighborDist) ){
+		if( (d > 0) && (d < this.neighbourRadius) ){
 			sum.add(boids[i].location); //add location
 			count++;
 		}
@@ -155,12 +169,26 @@ Boid.prototype.seek = function(target){
 };
 
 Boid.prototype.borders = function(){
-	return
+	if (this.location.x < this.wrapDimensions.west) {
+		this.location.x = this.wrapDimensions.east;
+	}
+	if (this.location.y < this.wrapDimensions.north) {
+		this.location.y = this.wrapDimensions.south;
+	}
+	if (this.location.x > this.wrapDimensions.east) {
+		this.location.x = this.wrapDimensions.west;
+	}
+	if (this.location.y > this.wrapDimensions.south) {
+		return this.location.y = this.wrapDimensions.north;
+	}
+	/*
+	//!!!!! NOT WORKING YET
 	//TODO width height
 	if (this.location.x < -this.r) this.location.x = this.w+this.r;
     if (this.location.y < -this.r) this.location.y = this.h+this.r;
     if (this.location.x > this.w+this.r) this.location.x = -this.r;
     if (this.location.y > this.h+this.r) this.location.y = -this.r;
+    */
 };
 
 Boid.prototype.update = function(){
@@ -180,37 +208,26 @@ Boid.prototype.update = function(){
 Boid.prototype.draw = function(target){
 	//draw triangle rotated in direction of velocity //TODO
 	var theta = this.velocity.heading() + (90*(Math.PI/180)); //????
-	/*
-	  fill(200, 100);
-    stroke(255);
-    pushMatrix();
-    translate(location.x, location.y);
-    rotate(theta);
-    beginShape(TRIANGLES);
-    vertex(0, -r*2);
-    vertex(-r, r*2);
-    vertex(r, r*2);
-    endShape();
-    popMatrix();
-	*/
-	//this.c.save();
+
+	this.c.save();
 	this.c.beginPath();
-	this.c.strokeStyle = 'rgba(255,0,0,1)';
+	this.c.strokeStyle = 'rgba(255,200,255,1)';
 	this.c.fillStyle = 'rgba(255,0,255,1)';
 
-	//this.c.translate(this.location.x, this.location.y);
-	//this.c.rotate(theta);
+	this.c.translate(this.location.x, this.location.y);
+	this.c.rotate(theta);
+	this.c.moveTo(0,0);
+	this.c.lineTo(-this.r, this.r*2);
+	this.c.lineTo(this.r, this.r*2);
+	this.c.lineTo(0, 0);
+    this.c.fill();
 	
-	//this.c.lineTo(0, -this.r*2);
-	//this.c.lineTo(-this.r, this.r*2);
-	//this.c.lineTo(this.r, this.r*2);
-	
-	this.c.fillRect(this.location.x,this.location.y,5,5);
+	//this.c.fillRect(this.location.x,this.location.y,15,15);
 	//this.c.fillRect(0, -this.r*2,5,5);	
 
 	this.c.stroke();
 	this.c.closePath();
 
-	//this.c.restore();
+	this.c.restore();
 };
 

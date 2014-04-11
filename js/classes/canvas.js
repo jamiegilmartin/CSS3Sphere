@@ -41,13 +41,30 @@ function Canvas(name){
 		this.rotateZ = 0;
 		//this.drawGrid();
 
-		this.createParticles();
-		this.flock();
+		//this.createParticles();
+		//
 	}
 };
 //inherits GameObject
 Canvas.prototype = new GameObject();
 Canvas.prototype.constructor = Canvas;
+
+
+//append
+Canvas.prototype.appendToDom = function(parentElement){
+	//set width
+	this.w = this.element.width = parentElement.offsetWidth;
+	this.h = this.element.height = parentElement.offsetHeight;
+	this.location = new Vector((parentElement.offsetWidth*.5 - (this.w*.5)),(parentElement.offsetHeight*.5  - (this.h*.5)), 0 );
+	parentElement.appendChild(this.element);
+
+	this.start();
+};
+//start
+Canvas.prototype.start = function(){
+	this.flock();
+};
+
 
 //helpers
 Canvas.prototype.clear = function(){
@@ -71,14 +88,7 @@ Canvas.prototype.center = function(){
 	//center canvas
 	this.c.translate(this.w*0.5,this.h*0.5);
 };
-//append
-Canvas.prototype.appendToDom = function(parentElement){
-	//set width
-	this.w = this.element.width = parentElement.offsetWidth;
-	this.h = this.element.height = parentElement.offsetHeight;
-	this.location = new Vector((parentElement.offsetWidth*.5 - (this.w*.5)),(parentElement.offsetHeight*.5  - (this.h*.5)), 0 );
-	parentElement.appendChild(this.element);
-};
+
 //load image
 Canvas.prototype.loadImage = function( image , done ){
 	var self = this;
@@ -213,14 +223,14 @@ Canvas.prototype.createParticles = function(){
 
 Canvas.prototype.flock = function(){
 	//center canvas
-	this.center();
+	//this.center();
 
 
 	this.boids = [];
 
-	for(var i=0;i<150;i++){
-		var lx = utils.randIntRange(-100,100),
-			ly = utils.randIntRange(-100,100);
+	for(var i=0;i<50;i++){
+		var lx = utils.randIntRange(0,this.w),
+			ly = utils.randIntRange(0,this.h);
 		this.boids.push(new Boid(this, lx, ly, 0) );
 
 	}
@@ -236,12 +246,14 @@ Canvas.prototype.flock = function(){
  * animation functions
  */
 Canvas.prototype.update = function(){
-	this.c.save();
+	//this.c.save();
+
+	this.c.clearRect( 0, 0, this.w, this.h );
 };
 
 Canvas.prototype.draw = function(){
 	//center canvas
-	this.center();
+	//this.center();
 	/*
 	this.particleSystem.draw();
 	this.repeller1.draw();
@@ -259,13 +271,12 @@ Canvas.prototype.draw = function(){
 	*/
 
 
-	for(var i=0;i<150;i++){
+	for(var i=0;i<this.boids.length;i++){
 		this.boids[i].run(this.boids);
 	}
 
-
-	this.fade();
-	this.c.restore();
+	//this.fade();
+	//this.c.restore();
 };
 
 
