@@ -20,7 +20,7 @@ function Boid(constructor,x,y,z){
 
 	this.acceleration = new Vector(0,0,0);
 	this.r = 8.0;
-	this.maxSpeed = 2;
+	this.maxSpeed = 12;
 	this.maxForce = 0.03;
 
 	this.wrapFactor =1;
@@ -258,12 +258,13 @@ Boid.prototype.draw = function(target){
 	var theta = this.velocity.heading() + (90*(Math.PI/180)); //????
 
 	this.c.save();
+	this.c.translate(this.location.x, this.location.y);
+	this.c.rotate(theta);
+
 	this.c.beginPath();
 	this.c.strokeStyle = 'rgba(255,200,255,1)';
 	this.c.fillStyle = 'rgba(255,0,255,1)';
 
-	this.c.translate(this.location.x, this.location.y);
-	this.c.rotate(theta);
 	this.c.moveTo(0,0);
 	this.c.lineTo(-this.r, this.r*2);
 	this.c.lineTo(this.r, this.r*2);

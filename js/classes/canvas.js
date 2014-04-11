@@ -224,7 +224,7 @@ Canvas.prototype.createParticles = function(){
 Canvas.prototype.flock = function(){
 	//center canvas
 	//this.center();
-	var numOfBoids = 10;
+	var numOfBoids = 55;
 
 	this.boids = [];
 
@@ -239,9 +239,14 @@ Canvas.prototype.flock = function(){
 	this.mouse.x = 0;
 	this.mouse.y = 0;
 	this.mouse.down = false;
+	this.mouse.radius = 5;
 	var self = this;
 	this.element.addEventListener('mousedown',function(e){
 		self.mouse.down = true;
+		self.pushFlock(e.clientX,e.clientY);
+	},false);
+	this.element.addEventListener('mousemove',function(e){
+		if(self.mouse.down)
 		self.pushFlock(e.clientX,e.clientY);
 	},false);
 	this.element.addEventListener('mouseup',function(e){
@@ -250,16 +255,13 @@ Canvas.prototype.flock = function(){
 };
 
 Canvas.prototype.pushFlock = function(x,y){
-	var mouseRadius = 5;
 	this.mouse.x = x;
 	this.mouse.y = y;
-
-	console.log('click',x,y)
 
 	for(var i=0;i<this.boids.length;i++){
 		var m = new Vector(x,y,0);
 		m.subtract(this.boids[i].location);
-		var d = m.magnitude() - mouseRadius;
+		var d = m.magnitude() - this.mouse.radius ;
 		if(d < 0){
 			d = 0.01;
 		}
@@ -273,7 +275,6 @@ Canvas.prototype.pushFlock = function(x,y){
 			gravity.add(m);
 			gravity.multiply(1.0);
 
-			console.log(gravity)
 			this.boids[i].applyForce(gravity);
 		}
 
@@ -319,6 +320,59 @@ Canvas.prototype.draw = function(){
 	for(var i=0;i<this.boids.length;i++){
 		this.boids[i].run(this.boids);
 	}
+
+
+	//draw mouse down
+	if(this.mouse.down){
+				this.c.save();
+		this.c.translate(this.mouse.x, this.mouse.y);
+
+		this.c.beginPath();
+		this.c.strokeStyle = 'rgba(50,255,50,1)';
+		this.c.fillStyle = 'rgba(100,255,100,0.3)';
+
+		
+		this.c.moveTo(0,0);
+
+		//for(var a = 0; a<360; a+= 360/8 ){
+		for(var a = 0; a<2*Math.PI; a+=Math.PI/8){
+			var r = this.mouse.radius*5;
+			console.log(a)
+			var x = r*Math.cos(a);
+			var y = r*Math.sin(a);
+			var firstX, firstY;
+			if(a===0 ){
+				firstX = x;
+				firstY = y;
+				this.c.moveTo(x,y);
+			}else{
+				this.c.fillStyle = 'rgba(100,255,100,0.3)';
+				//this.c.fillRect(x-4,y-4,8,8);
+				this.c.lineTo(x,y);
+			}
+			if(a===utils.radians(315)){
+				
+			}
+			//a shell :)
+			this.c.lineTo(firstX,firstY);
+		}
+
+		//this.c.lineTo(-this.r, this.r*2);
+		//this.c.lineTo(this.r, this.r*2);
+		//this.c.lineTo(0, 0);
+	    this.c.fill();
+		
+		//this.c.fillRect(this.location.x,this.location.y,15,15);
+		//this.c.fillRect(0, -this.r*2,5,5);	
+
+		this.c.stroke();
+		this.c.closePath();
+
+		this.c.restore();
+	}
+	
+
+
 
 	//this.fade();
 	//this.c.restore();

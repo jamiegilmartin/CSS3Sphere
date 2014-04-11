@@ -10,6 +10,12 @@ utils.randIntRange = function (min, max, roundTo ) {
 utils.randFloatRange = function (min, max) {
     return Math.random()*(max-min) + min;
 };
+utils.degrees = function(radians){
+    return radians * (180/Math.PI);
+};
+utils.radians = function(degrees){
+    return degrees *(Math.PI/180);
+};
 //http://stackoverflow.com/questions/7264899/detect-css-transitions-using-javascript-and-without-modernizr
 utils.supportsTransitions = function() {
     var b = document.body || document.documentElement;
