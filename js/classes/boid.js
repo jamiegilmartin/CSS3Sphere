@@ -16,6 +16,11 @@ function Boid(constructor,x,y,z){
 	//sound
 	this.soundDuration  = 500;
 
+
+	this.audio = document.createElement('audio');
+	document.body.appendChild(this.audio);
+
+
 	this.location = new Vector(x,y,z);
 
 	var angle = Math.random() * (2*Math.PI);
@@ -223,11 +228,9 @@ Boid.prototype.sound = function(){
 };
 
 
-Boid.prototype.audio = function(){
-	var audio = document.createElement('audio');
-	document.body.appendChild(audio);
-	audio.src = utils.getRandomNote();
-	audio.play();
+Boid.prototype.playAudio = function(){
+	this.audio.src = utils.getRandomNote();
+	this.audio.play();
 };
 
 

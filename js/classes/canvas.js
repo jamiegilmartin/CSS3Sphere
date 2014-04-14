@@ -322,7 +322,7 @@ Canvas.prototype.pushFlock = function(x,y){
 
 				this.boids[i].changeColor();
 				//this.boids[i].sound();
-				this.boids[i].audio();
+				this.boids[i].playAudio();
 
 				//this.audioPlayer.src = "./sounds/" + this.getNote();
 				//this.audioPlayer.play();
