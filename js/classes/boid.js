@@ -205,8 +205,8 @@ ctx.fillText("Big smile!",10,90);
 	*/
 };
 Boid.prototype.changeColor = function(){
-	this.stroke =  'rgba(0,0,0,0.7)';//utils.getRandomRGB();
-	this.fill = '#56acdd';//utils.getRandomRGBA();
+	this.stroke =  this.stoke === 'rgba(0,0,0,0.7)' ? 'rgba(255,200,255,1)' :  'rgba(0,0,0,0.7)' ;//utils.getRandomRGB();
+	this.fill = this.fill=== '#56acdd' ?  'rgba(255,0,255,1)' : '#56acdd';//utils.getRandomRGBA();
 };
 
 

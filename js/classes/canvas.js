@@ -239,7 +239,7 @@ Canvas.prototype.flock = function(){
 	this.mouse.x = 0;
 	this.mouse.y = 0;
 	this.mouse.down = false;
-	this.mouse.radius = 5;
+	this.mouse.radius = 2;
 	var self = this;
 	this.element.addEventListener('mousedown',function(e){
 		self.mouse.down = true;
