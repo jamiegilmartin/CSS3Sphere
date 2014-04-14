@@ -223,6 +223,12 @@ Boid.prototype.sound = function(){
 };
 
 
+Boid.prototype.audio = function(){
+	var audio = document.createElement('audio');
+	document.body.appendChild(audio);
+	audio.src = utils.getRandomNote();
+	audio.play();
+};
 
 
 

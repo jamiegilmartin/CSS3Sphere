@@ -277,7 +277,7 @@ Canvas.prototype.flock = function(){
 */
 
 	//audio 
-	this.audioPlayer = document.getElementById("audioPlayer");
+	//this.audioPlayer = document.getElementById("audioPlayer");
 
 
 };
@@ -322,29 +322,17 @@ Canvas.prototype.pushFlock = function(x,y){
 
 				this.boids[i].changeColor();
 				//this.boids[i].sound();
+				this.boids[i].audio();
 
-				this.audioPlayer.src = "./sounds/" + this.getNote();
-				this.audioPlayer.play();
+				//this.audioPlayer.src = "./sounds/" + this.getNote();
+				//this.audioPlayer.play();
 			}
 		}
 
 		
 	}
 };
-Canvas.prototype.getNote = function(){
-	this.notes = [
-		"c.mp3",
-		"d.mp3",
-		"e.mp3",
-		"f.mp3",
-		"g.mp3",
-		"a.mp3",
-		"b.mp3",
-		"c1.mp3"
-	];
-	this.notes = utils.shuffleArray(this.notes);//TODO clone, pop, refresh
-	return this.notes[ utils.randIntRange(0,this.notes.length-1) ];
-};
+
 Canvas.prototype.getQuote = function(){
 	this.quotes = [
 		"doe",
