@@ -33,7 +33,7 @@ function Boid(constructor,x,y,z){
 
 	this.acceleration = new Vector(0,0,0);
 	this.r = 8.0;
-	this.maxSpeed = 12;
+	this.maxSpeed = 8;
 	this.maxForce = 0.03;
 
 	this.wrapFactor =1;

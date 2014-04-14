@@ -103,12 +103,12 @@ utils.getRandomRGB = function(){
 utils.getRandomNote = function(){
     this.notes = [
         "c.mp3",
-        "d.mp3",
-        "e.mp3",
+        //"d.mp3",
+        //"e.mp3",
         "f.mp3",
         "g.mp3",
-        "a.mp3",
-        "b.mp3",
+        //"a.mp3",
+        //"b.mp3",
         "c1.mp3"
     ];
     this.notes = utils.shuffleArray(this.notes);//TODO clone, pop, refresh
