@@ -80,7 +80,26 @@ utils.clamp = function(number,min,max){
     return  Math.min(Math.max(number, min), max);
 };
 
-
+//color
+//color tools
+utils.getRandomRGBA = function(){
+    var rgba = 'rgba('
+        +utils.randIntRange(10,255)+','
+        +utils.randIntRange(10,255)+','
+        +utils.randIntRange(200,255)+','
+        +utils.randFloatRange(0.2,0.7)+')';
+    
+    return rgba;
+};
+//color tools
+utils.getRandomRGB = function(){
+    var rgb = 'rgb('
+        +utils.randIntRange(10,255)+','
+        +utils.randIntRange(10,255)+','
+        +utils.randIntRange(200,255)+')';
+    
+    return rgb;
+};
 
 
 ///!!!!!!

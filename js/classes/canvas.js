@@ -252,11 +252,40 @@ Canvas.prototype.flock = function(){
 	this.element.addEventListener('mouseup',function(e){
 		self.mouse.down = false;
 	},false);
-};
 
+	
+		//speach
+	//var doneSpeaking = false;
+	//meSpeak.loadConfig("js/libraries/mespeak/mespeak_config.json");
+	//meSpeak.loadVoice("js/libraries/mespeak/voices/en/en.json");
+	/*
+	//intro
+	meSpeak.speak("I am ogillbot. I advertise the future.", {speed: 50},function(){
+		doneSpeaking = true;
+	});
+
+
+	this.element.addEventListener('click',function(){
+		if(doneSpeaking){
+			doneSpeaking = false;
+			meSpeak.speak(self.getQuote(), {speed: 120}, function(){
+				doneSpeaking = true;
+			});
+		}
+		
+	},false);
+*/
+
+	//audio 
+	this.audioPlayer = document.getElementById("audioPlayer");
+
+
+};
 Canvas.prototype.pushFlock = function(x,y){
 	this.mouse.x = x;
 	this.mouse.y = y;
+
+	var doneSpeaking = true;
 
 	for(var i=0;i<this.boids.length;i++){
 		var m = new Vector(x,y,0);
@@ -277,14 +306,58 @@ Canvas.prototype.pushFlock = function(x,y){
 
 			this.boids[i].applyForce(gravity);
 
+			//capture boid
 			if(d < this.boids[i].neighbourRadius){
-				this.boids[i] = null;
-				this.boids.splice(i, 1);
+				//this.boids[i] = null;
+				//this.boids.splice(i, 1);
+				/*
+				if(doneSpeaking){
+					doneSpeaking = false;
+					meSpeak.speak(this.getQuote(), {speed: 120}, function(){
+						doneSpeaking = true;
+					});
+				}
+				*/
+
+
+				this.boids[i].changeColor();
+				//this.boids[i].sound();
+
+				this.audioPlayer.src = "./sounds/" + this.getNote();
+				this.audioPlayer.play();
 			}
 		}
 
 		
 	}
+};
+Canvas.prototype.getNote = function(){
+	this.notes = [
+		"c.mp3",
+		"d.mp3",
+		"e.mp3",
+		"f.mp3",
+		"g.mp3",
+		"a.mp3",
+		"b.mp3",
+		"c1.mp3"
+	];
+	this.notes = utils.shuffleArray(this.notes);//TODO clone, pop, refresh
+	return this.notes[ utils.randIntRange(0,this.notes.length-1) ];
+};
+Canvas.prototype.getQuote = function(){
+	this.quotes = [
+		"doe",
+		"ray",
+		"me",
+		"far",
+		"so",
+		"la",
+		"tea",
+		"doe"
+	];
+	this.quotes = utils.shuffleArray(this.quotes);//TODO clone, pop, refresh
+	return this.quotes[ utils.randIntRange(0,this.quotes.length-1) ];
 };
 
 
@@ -355,7 +428,7 @@ Canvas.prototype.drawCircle = function(){
 	//for(var a = 0; a<360; a+= 360/8 ){
 	for(var a = 0; a<2*Math.PI; a+=Math.PI/5){
 		var r = this.mouse.radius*10;
-		console.log(a)
+		//console.log(a)
 		var x = r*Math.cos(a);
 		var y = r*Math.sin(a);
 		var firstX, firstY;

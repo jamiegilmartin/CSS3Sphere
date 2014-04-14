@@ -8,6 +8,14 @@ function Boid(constructor,x,y,z){
 	this.c = constructor.c;//canvas ele
 	this.w = constructor.w;
 	this.h = constructor.h;
+
+	//colors
+	this.stroke = 'rgba(255,200,255,1)';
+	this.fill = 'rgba(255,0,255,1)';
+
+	//sound
+	this.soundDuration  = 500;
+
 	this.location = new Vector(x,y,z);
 
 	var angle = Math.random() * (2*Math.PI);
@@ -114,6 +122,122 @@ Boid.prototype.flock = function( boids ){
 	this.applyForce( cohesion );
 
 };
+
+//calculates steering force towards a target
+//STEER = desired - velocity
+Boid.prototype.seek = function(target){
+	var tc = target.copy();
+	var desired = tc.subtract(this.location);// a vector pointing from location to the target
+	//scale to max speed
+	desired.normalize();
+	desired.multiply(this.maxSpeed);
+
+	var steer = desired.subtract(this.velocity);
+	steer.limit(this.maxForce);
+	return steer;
+};
+
+Boid.prototype.borders = function(){
+	if (this.location.x < this.wrapDimensions.west) {
+		this.location.x = this.wrapDimensions.east;
+	}
+	if (this.location.y < this.wrapDimensions.north) {
+		this.location.y = this.wrapDimensions.south;
+	}
+	if (this.location.x > this.wrapDimensions.east) {
+		this.location.x = this.wrapDimensions.west;
+	}
+	if (this.location.y > this.wrapDimensions.south) {
+		return this.location.y = this.wrapDimensions.north;
+	}
+};
+Boid.prototype.update = function(){
+	//update velocity
+	this.velocity.add(this.acceleration);
+	//limit speed 
+	this.velocity.limit(this.maxSpeed);
+	this.location.add(this.velocity);
+
+	//reset acceleration
+	this.acceleration.multiply(0);
+};
+Boid.prototype.draw = function(target){
+	//draw triangle rotated in direction of velocity //TODO
+	var theta = this.velocity.heading() + (90*(Math.PI/180)); //????
+
+	this.c.save();
+	this.c.translate(this.location.x, this.location.y);
+	this.c.rotate(theta);
+
+	this.c.beginPath();
+	this.c.strokeStyle = this.stroke;
+	this.c.fillStyle =  this.fill;
+
+	this.c.moveTo(0,0);
+	this.c.lineTo(-this.r, this.r*2);
+	this.c.lineTo(this.r, this.r*2);
+	this.c.lineTo(0, 0);
+    this.c.fill();
+	
+	//this.c.fillRect(this.location.x,this.location.y,15,15);
+	//this.c.fillRect(0, -this.r*2,5,5);	
+
+	this.c.stroke();
+	this.c.closePath();
+
+	this.c.restore();
+
+	/*
+	ctx.font="30px Verdana";
+// Create gradient
+var gradient=ctx.createLinearGradient(0,0,c.width,0);
+gradient.addColorStop("0","magenta");
+gradient.addColorStop("0.5","blue");
+gradient.addColorStop("1.0","red");
+// Fill with gradient
+ctx.fillStyle=gradient;
+ctx.fillText("Big smile!",10,90);
+	*/
+};
+Boid.prototype.changeColor = function(){
+	this.stroke =  'rgba(0,0,0,0.7)';//utils.getRandomRGB();
+	this.fill = '#56acdd';//utils.getRandomRGBA();
+};
+
+
+//kills browser
+//@see http://patorjk.com/blog/2012/07/22/tone-playing-experiment-with-html5s-web-audio-api/
+Boid.prototype.sound = function(){
+	var self = this;
+	//set up ocillator
+	this.tone = new webkitAudioContext();
+	this.oscillator = this.tone.createOscillator();
+	this.oscillator.type = 0; // sine wave
+	this.oscillator.frequency.value = utils.randIntRange(2000,10000);
+	this.oscillator.connect(this.tone.destination);
+
+	//ocillator
+	this.oscillator.noteOn && this.oscillator.noteOn(0);
+	this.oscillator.disconnect();
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 Boid.prototype.flockX = function( boids ){
 	var separation = this.separate(boids); //separation
@@ -214,81 +338,4 @@ Boid.prototype.cohesion = function( boids ){
 };
 */
 
-
-//calculates steering force towards a target
-//STEER = desired - velocity
-Boid.prototype.seek = function(target){
-	var tc = target.copy();
-	var desired = tc.subtract(this.location);// a vector pointing from location to the target
-	//scale to max speed
-	desired.normalize();
-	desired.multiply(this.maxSpeed);
-
-	var steer = desired.subtract(this.velocity);
-	steer.limit(this.maxForce);
-	return steer;
-};
-
-Boid.prototype.borders = function(){
-	if (this.location.x < this.wrapDimensions.west) {
-		this.location.x = this.wrapDimensions.east;
-	}
-	if (this.location.y < this.wrapDimensions.north) {
-		this.location.y = this.wrapDimensions.south;
-	}
-	if (this.location.x > this.wrapDimensions.east) {
-		this.location.x = this.wrapDimensions.west;
-	}
-	if (this.location.y > this.wrapDimensions.south) {
-		return this.location.y = this.wrapDimensions.north;
-	}
-};
-Boid.prototype.update = function(){
-	//update velocity
-	this.velocity.add(this.acceleration);
-	//limit speed 
-	this.velocity.limit(this.maxSpeed);
-	this.location.add(this.velocity);
-
-	//reset acceleration
-	this.acceleration.multiply(0);
-};
-Boid.prototype.draw = function(target){
-	//draw triangle rotated in direction of velocity //TODO
-	var theta = this.velocity.heading() + (90*(Math.PI/180)); //????
-
-	this.c.save();
-	this.c.translate(this.location.x, this.location.y);
-	this.c.rotate(theta);
-
-	this.c.beginPath();
-	this.c.strokeStyle = 'rgba(255,200,255,1)';
-	this.c.fillStyle = 'rgba(255,0,255,1)';
-
-	this.c.moveTo(0,0);
-	this.c.lineTo(-this.r, this.r*2);
-	this.c.lineTo(this.r, this.r*2);
-	this.c.lineTo(0, 0);
-    this.c.fill();
-	
-	//this.c.fillRect(this.location.x,this.location.y,15,15);
-	//this.c.fillRect(0, -this.r*2,5,5);	
-
-	this.c.stroke();
-	this.c.closePath();
-
-	this.c.restore();
-
-	/*
-	ctx.font="30px Verdana";
-// Create gradient
-var gradient=ctx.createLinearGradient(0,0,c.width,0);
-gradient.addColorStop("0","magenta");
-gradient.addColorStop("0.5","blue");
-gradient.addColorStop("1.0","red");
-// Fill with gradient
-ctx.fillStyle=gradient;
-ctx.fillText("Big smile!",10,90);
-	*/
-};
 
