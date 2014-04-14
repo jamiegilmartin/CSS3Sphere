@@ -231,6 +231,13 @@ Boid.prototype.sound = function(){
 Boid.prototype.playAudio = function(){
 	this.audio.src = utils.getRandomNote();
 	this.audio.play();
+
+	//todo rewind?
+
+	var self = this;
+	setTimeout(function(){
+		if(self.audio.currentTime) self.audio.currentTime = 0;
+	},1000)
 };
 
 

@@ -278,7 +278,22 @@ Canvas.prototype.flock = function(){
 
 	//audio 
 	//this.audioPlayer = document.getElementById("audioPlayer");
+	//this.audioStart =  this.audioPlayer.seekable.start(0);
+	//this.audioEnd =  this.audioPlayer.seekable.end(0);
 
+	//mediaElement.currentTime = 122; // Seek to 122 seconds
+	//mediaElement.played.end();      // Returns the number of seconds the browser has played
+
+	
+	
+	//var self = this;
+	//this.audioPlayer.addEventListener('loadedmetadata', function() {
+    //}, false);
+
+
+
+    //this.clipLength = this.audioEnd / this.boids.length;
+  	//console.log(this.audioEnd, this.clipLength);
 
 };
 Canvas.prototype.pushFlock = function(x,y){
@@ -322,10 +337,21 @@ Canvas.prototype.pushFlock = function(x,y){
 
 				this.boids[i].changeColor();
 				//this.boids[i].sound();
+
 				this.boids[i].playAudio();
 
 				//this.audioPlayer.src = "./sounds/" + this.getNote();
 				//this.audioPlayer.play();
+
+				//console.log( (i*this.clipLength)-this.clipLength )
+				/*
+				this.audioPlayer.currentTime = (i*this.clipLength)-this.clipLength;
+				
+				this.audioPlayer.play();
+				if(this.audioPlayer.currentTime > (i*this.clipLength)){
+					this.audioPlayer.stop();
+				}
+				*/
 			}
 		}
 
