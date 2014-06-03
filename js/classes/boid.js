@@ -73,15 +73,15 @@ Boid.prototype.flock = function( boids ){
 	var separation_mean = new Vector(0,0,0),
 		alignment_mean = new Vector(0,0,0),
 		cohesion_mean = new Vector(0,0,0),
-		separation_count = 0;
-		alignment_count = 0;
+		separation_count = 0,
+		alignment_count = 0,
 		cohesion_count = 0;
 	for(var i=0;i<boids.length;i++){
 		var other = boids[i];
 		if(other === this){
 			continue;
 		}
-		d = this.location.euclidean_distance(other.location);
+		var d = this.location.euclidean_distance(other.location);
 		if(d>0){
 			if(d <  this.desiredSeparation){
 				var lc = this.location.copy();

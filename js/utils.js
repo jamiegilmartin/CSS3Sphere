@@ -92,6 +92,16 @@ utils.getRandomRGBA = function(){
     return rgba;
 };
 //color tools
+utils.getRandomRGB_provideA = function(a){
+    var rgba = 'rgba('
+        +utils.randIntRange(10,255)+','
+        +utils.randIntRange(10,255)+','
+        +utils.randIntRange(200,255)+','
+        +a+')';
+    
+    return rgba;
+};
+//color tools
 utils.getRandomRGB = function(){
     var rgb = 'rgb('
         +utils.randIntRange(10,255)+','
@@ -101,14 +111,14 @@ utils.getRandomRGB = function(){
     return rgb;
 };
 utils.getRandomNote = function(){
-    this.notesX = [
+    this.notesm = [
         "c.mp3",
-        //"d.mp3",
-        //"e.mp3",
+        "d.mp3",
+        "e.mp3",
         "f.mp3",
         "g.mp3",
-        //"a.mp3",
-        //"b.mp3",
+        "a.mp3",
+        "b.mp3",
         "c1.mp3"
     ];
     this.notes = [
@@ -120,6 +130,7 @@ utils.getRandomNote = function(){
     ];
     this.notes = utils.shuffleArray(this.notes);//TODO clone, pop, refresh
     return "./sounds/jb/" + this.notes[ utils.randIntRange(0,this.notes.length-1) ];
+    //return "./sounds/" + this.notes[ utils.randIntRange(0,this.notes.length-1) ];
 };
 
 

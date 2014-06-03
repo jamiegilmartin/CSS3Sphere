@@ -64,6 +64,7 @@ Canvas.prototype.appendToDom = function(parentElement){
 //start
 Canvas.prototype.start = function(){
 	this.flock();
+	//this.createParticles();
 };
 
 
@@ -218,7 +219,7 @@ Canvas.prototype.createParticles = function(){
 	this.repeller3 = new Repeller(this.c, 60, 60, 0);
 	this.repeller4 = new Repeller(this.c, -60, -20, 0);
 	this.repeller5 = new Repeller(this.c, 60, -20, 0);
-	this.gravity = new Vector(0,0.1,0);
+	this.gravity = new Vector(0,0.05,0);
 };
 
 Canvas.prototype.flock = function(){
@@ -234,7 +235,9 @@ Canvas.prototype.flock = function(){
 		this.boids.push(new Boid(this, lx, ly, 0) );
 
 	}
-
+	/*
+	* mouse
+	*/
 	this.mouse = {}
 	this.mouse.x = 0;
 	this.mouse.y = 0;
@@ -274,7 +277,7 @@ Canvas.prototype.flock = function(){
 		}
 		
 	},false);
-*/
+	*/
 
 	//audio 
 	//this.audioPlayer = document.getElementById("audioPlayer");
@@ -384,17 +387,21 @@ Canvas.prototype.update = function(){
 	this.c.clearRect( 0, 0, this.w, this.h );
 
 	//keep applying mouse force
+	if(this.mouse)
 	if(this.mouse.down){
 		this.pushFlock(this.mouse.x,this.mouse.y);
 	}
 
 	this.rotationIteration += 0.1;
+
+	//this.gravity.x = Math.sin(this.gravity.y);
+	//this.gravity.y+= utils.randIntRange(-9,9)*0.001;
 };
 
 Canvas.prototype.draw = function(){
 	//center canvas
 	//this.center();
-	/*
+		/*
 	this.particleSystem.draw();
 	this.repeller1.draw();
 	this.repeller2.draw()
@@ -411,6 +418,7 @@ Canvas.prototype.draw = function(){
 	*/
 
 
+
 	for(var i=0;i<this.boids.length;i++){
 		this.boids[i].run(this.boids);
 	}
@@ -424,9 +432,8 @@ Canvas.prototype.draw = function(){
 	
 
 
-
-	//this.fade();
-	//this.c.restore();
+	this.fade();
+	this.c.restore();
 };
 Canvas.prototype.drawCircle = function(){
 	this.c.save();
@@ -539,7 +546,7 @@ Canvas.prototype.updateX = function(){
 //old
 Canvas.prototype.drawX = function(){
 	//center canvas
-	this.center();
+	//this.center();
 	
 	//this.c.lineWidth = 1.5;
 	this.c.beginPath();
@@ -554,7 +561,7 @@ Canvas.prototype.drawX = function(){
 	//console.log(n)
 
 	if(this.n<100){
-		/*
+		
 		for(var a = 0; a<360; a+=360/180){//
 			var x = r*Math.cos(a+(n));
 			var y = r*Math.sin(a+(n));
@@ -571,8 +578,8 @@ Canvas.prototype.drawX = function(){
 			//this.c.quadraticCurveTo(0,0,x,y);
 			//this.c.bezierCurveTo(n,n,x+n,y+n,x,y);
 			//this.c.arcTo(x,y,x*n,y*n,r)
-		}*/
-		
+		}
+		/*
 		for(var a = 0; a<360; a+= n ){
 			var r = 500;
 			var x = r*Math.cos(a);
@@ -581,7 +588,7 @@ Canvas.prototype.drawX = function(){
 			if(a===360) this.c.moveTo(x,y);
 			//this.c.fillRect(x,y,1,1);
 			this.c.lineTo(x,y);
-		}
+		}*/
 		
 
 
@@ -607,7 +614,113 @@ Canvas.prototype.drawX = function(){
 };
 
 
+Canvas.prototype.updateX = function(){
+	this.n++;
+	this.r+=5 % 50;
+	
+};
+//graphing
+Canvas.prototype.drawX = function(){
+	this.c.save();
+	this.c.translate(0,0);
+	
+	this.c.beginPath();
+	//this.c.lineWidth = 1.5;
+	this.c.beginPath();
 
+	//var n = this.n%360; //this.n;
+	//var n = 0;
+	//var r = this.r%500;
+
+	this.c.strokeStyle = 'rgba(50,255,50,1)';
+	this.c.fillStyle = 'rgba(100,255,100,0.3)';
+
+	this.c.moveTo(0,0);
+	//console.log(n)
+
+	if(this.n<100){
+		/*
+		for(var a = 0; a<360; a+=360/180){//
+			var x = r*Math.cos(a+(n));
+			var y = r*Math.sin(a+(n));
+			if(a===0) this.c.moveTo(x,y);
+
+			//colors
+			//var color = this.getColorByPos(x,y,r);
+			this.c.strokeStyle = 'rgba(255,255,255,0.05)';
+			this.c.fillStyle = 'rgba(255,255,255,0.5)';
+
+
+			this.c.lineTo(x,y);
+			this.c.fillRect(x,y,1,1);
+			//this.c.quadraticCurveTo(0,0,x,y);
+			//this.c.bezierCurveTo(n,n,x+n,y+n,x,y);
+			//this.c.arcTo(x,y,x*n,y*n,r)
+		}
+		
+		for(var a = 0; a<360; a+= n ){
+			var r = 500;
+			var x = r*Math.cos(a);
+			var y = r*Math.sin(a);
+			if(a===0) this.c.moveTo(x,y);
+			if(a===360) this.c.moveTo(x,y);
+			//this.c.fillRect(x,y,1,1);
+			this.c.lineTo(x,y);
+		}
+		//for(var a = 0; a<360; a+= 360/8 ){
+		for(var a = 0; a<2*Math.PI; a+=Math.PI/5){
+			var r =this.r;
+			//console.log(a)
+			var x = r*Math.cos(a);
+			var y = r*Math.sin(a);
+			var firstX, firstY;
+			if(a===0 ){
+				firstX = x;
+				firstY = y;
+				this.c.moveTo(x,y);
+				this.c.fillRect(x-4,y-4,8,8);
+			}else{
+				if(a===utils.radians(315)){
+					//a shell :)
+					this.c.fillRect(x-4,y-4,8,8);
+				}
+
+				this.c.fillRect(x-4,y-4,8,8);
+				this.c.lineTo(x,y);
+			}
+					
+		}
+		this.c.lineTo(firstX,firstY);
+		*/
+		for(var y = -100; y<100; y+=0.25){
+			var x = Math.sqrt(y,this.n);
+				//y = Math.atan(x);
+				//x = Math.cos(y);
+			//this.c.fillRect(x,y,1,1);
+			this.c.lineTo(x*100+55,-y*100);
+		}
+
+
+
+		//this.n -= this.n*0.1;
+		//this.r -= this.r*0.01;
+	}else{
+		//this.n = 0;
+	}
+
+    this.c.fill();
+	
+	//this.c.fillRect(this.location.x,this.location.y,15,15);
+	//this.c.fillRect(0, -this.r*2,5,5);	
+
+
+	this.c.stroke();
+	this.c.closePath();
+	//this.c.globalAlpha = Math.random();
+	this.fade();
+
+	this.c.restore();
+};
 
 
 

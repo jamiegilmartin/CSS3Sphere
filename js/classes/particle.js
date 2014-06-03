@@ -46,8 +46,9 @@ Particle.prototype.update = function(){
  */
 Particle.prototype.draw = function(){
 	this.c.beginPath();
-	this.c.strokeStyle = 'rgba(255,0,0,'+this.lifeSpan+')';
-	this.c.fillStyle = 'rgba(255,0,255,'+this.lifeSpan+')';
+	
+	this.c.strokeStyle = utils.getRandomRGB_provideA(this.lifeSpan);//'rgba(255,0,0,'+this.lifeSpan+')';
+	this.c.fillStyle =  utils.getRandomRGB_provideA(this.lifeSpan);//'rgba(255,0,255,'+this.lifeSpan+')';
 	this.c.fillRect(this.location.x,this.location.y,5,5);
 	this.c.stroke();
 	this.c.closePath();

@@ -22,6 +22,19 @@ Grid.prototype.build =  function(){
 	this.square = {};
 	//start surface 2d array
 	this.surface = new Array(this.columns);
+
+
+
+	/*
+	//https://medium.com/cool-code-pal/1f5fd88a219e
+		var il = 20;
+		var jl = 9;
+		for (var i=0, j=0; i<il && j<jl; j++, i=(j==jl)?i+1:i,j=(j==jl)?j=0:j) {
+			console.log(i, j);
+		}
+
+	*/
+
 	//2d loop
 	for(var j=0; j<this.columns;j++){
 		//finish surface
